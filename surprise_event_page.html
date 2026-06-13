@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎂 Surprise 60 ans de Papa !</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- React & ReactDOM CDN -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <!-- Babel compiler for JSX in browser -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <style>
+        /* Custom styles for smoother experience */
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+        /* Custom scrollbar for checklist */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-[#FDFBF7]">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        const TRANSLATIONS = {
+          FR: {
+            title: "🎂 Surprise 60 ans de Papa !",
+            subtitle: "👨‍👩‍👧‍👦 Glamping & Aventure Sauvage au Camp Sahara (Mer Morte)",
+            meta_desc: "Évènement Exceptionnel - Camp Sahara Desert Adventure",
+            countdown_title: "Compte à rebours avant la surprise",
+            days: "Jours",
+            hours: "Heures",
+            minutes: "Minutes",
+            seconds: "Secondes",
+            change_date: "Changer la date de la surprise",
+            save: "Enregistrer",
+            reset: "Réinitialiser",
+            dream_team: "La Dream Team au complet, prête pour l'aventure ! 👨‍👩‍👧‍👦❤️",
+            blessing_title: "✨ Bénédiction de la Famille Nakache ✨",
+            blessing_text: "À notre cher Papa, notre pilier, notre repère et notre source d'inspiration. Aujourd'hui, pour tes 60 ans, nous sommes tous réunis sous le ciel magique du désert pour te célébrer avec tout notre amour. Merci pour ta force tranquille, ta générosité infinie, tes conseils précieux et ton rire chaleureux qui illumine nos vies au quotidien. Que cette nouvelle décennie t'apporte une santé de fer, une joie débordante, une sérénité profonde et encore mille et un voyages et moments inoubliables partagés tous ensemble. Tu es notre roi aujourd'hui et pour toujours !",
+            blessing_signature: "Nous t'aimons plus que tout au monde — La Famille Nakache TOUS ❤️",
+            day1: "Jour 1",
+            day2: "Jour 2",
+            day1_subtitle: "Le Grand Départ & La Surprise !",
+            day2_subtitle: "Désert Oasis & Randonnée Aquatique",
+            packing_title: "🎒 Checklist des Bagages",
+            packing_subtitle: "Cochez les affaires au fur et à mesure pour ne rien oublier",
+            all: "Tout",
+            cat_baby: "Bébé & Enfants 👶",
+            cat_swim: "Baignade & Soleil 🏖️",
+            cat_hike: "Hike & Désert 🌵",
+            cat_surprise: "Logistique Surprise 🎉",
+            add_item: "Ajouter un article...",
+            btn_add: "Ajouter",
+            reset_list: "Réinitialiser la liste",
+            who_brings_what: "🍢 Qui apporte quoi ? (Barbecue & Fête)",
+            who_subtitle: "Répartition des tâches familiales et courses",
+            add_task: "Ajouter un élément...",
+            assignee_placeholder: "Qui ?",
+            directions_title: "📍 Adresses & Navigation Rapide",
+            directions_subtitle: "Cliquez sur les liens pour lancer votre GPS",
+            waze_link: "Lancer Waze",
+            gmaps_link: "Google Maps",
+            tip: "💡 Conseil :",
+            view_details: "Détails de l'étape",
+            completed: "complété",
+            items_left: "restants",
+            no_items: "Aucun article dans cette catégorie.",
+            no_tasks: "Toutes les tâches sont terminées ou aucune n'a été ajoutée !",
+            team_progress: "Progression de la Dream Team",
+            timeline_steps: [
+              {
+                time: "09:15",
+                tag: "Départ",
+                title: "🚗 Départ de Raanana",
+                desc: "On charge les voitures et on décolle en premier pour devancer Papa et tout préparer sur place au Camp Sahara ! Gardez un sac à part avec maillots et crème solaire.",
+                day: 1
+              },
+              {
+                time: "10:45 - 12:00",
+                tag: "Pause & Repas",
+                title: "🏃‍♂️ Parc de la Voie Ferrée & Déjeuner",
+                desc: "Arrêt à 'The First Station' à Jérusalem. Le petit de 3 ans se défoule sur l'ancienne voie ferrée et les wagons en bois pendant que bébé reste au frais.",
+                day: 1
+              },
+              {
+                time: "12:00 - 13:15",
+                tag: "Repos",
+                title: "😴 Sieste en voiture",
+                desc: "Pendant la descente vers la mer Morte, les enfants s'endorment à coup sûr. Route tranquille pour les parents à travers de superbes panoramas désertiques.",
+                day: 1
+              },
+              {
+                time: "13:15",
+                tag: "Installation",
+                title: "⛺ Arrivée au Camp Sahara & Préparation",
+                desc: "On arrive 1h30 avant Papa ! Check-in, installation des ballons de fête et de la banderole 'Joyeux 60 ans'. Tout le monde enfile son maillot.",
+                day: 1
+              },
+              {
+                time: "15:00",
+                tag: "SURPRISE !",
+                title: "👑 LE GRAND MOMENT : SURPRISE !",
+                desc: "Papa arrive en pensant être en tête-à-tête... et toute la famille est là ! Émotions, larmes de joie, embrassades puis plongeon collectif dans la piscine ! 🥳💦",
+                day: 1,
+                highlight: true
+              },
+              {
+                time: "17:30",
+                tag: "Crépuscule",
+                title: "🌅 Coucher de soleil à la Mer Morte",
+                desc: "Petite séance photo magique en famille face aux montagnes de Moav. Les enfants jouent dans le sable doré.",
+                day: 1
+              },
+              {
+                time: "19:30+",
+                tag: "Soirée",
+                title: "🔥 Barbecue & Feu de camp",
+                desc: "Dîner de fête au glamping, grillades au feu de bois, guimauves rôties et musique sous une voûte céleste incroyable.",
+                day: 1
+              },
+              {
+                time: "08:00",
+                tag: "Réveil",
+                title: "☕ Matin doux au désert",
+                desc: "Petit-déjeuner tranquille sur le campement avec un bon café chaud face à l'immensité du désert et la brise matinale.",
+                day: 2
+              },
+              {
+                time: "09:15 - 11:30",
+                tag: "Randonnée",
+                title: "💦 Randonnée aquatique à Ein Gedi",
+                desc: "Balade facile et ombragée à Nahal David jusqu'à la première cascade. Les enfants s'amusent dans l'eau fraîche et on croise souvent des bouquetins sauvages !",
+                day: 2
+              },
+              {
+                time: "11:30",
+                tag: "Piscine",
+                title: "🏊‍♂️ Piscine du Camp Sahara",
+                desc: "De retour de la randonnée, on plonge directement dans l'eau cristalline de la piscine pour se détendre avant les grosses chaleurs de midi.",
+                day: 2
+              },
+              {
+                time: "13:00 - 15:30",
+                tag: "Repos",
+                title: "🍔 Déjeuner & Sieste au frais",
+                desc: "Déjeuner léger et sieste méritée pour tout le monde dans le confort des tentes de glamping parfaitement climatisées.",
+                day: 2
+              },
+              {
+                time: "15:30",
+                tag: "Fun",
+                title: "⛲ Fountain Walk & Check-out",
+                desc: "Promenade sur l'esplanade d'Ein Bokek. Le grand s'amuse dans les jets d'eau gratuits et on s'offre une délicieuse glace rafraîchissante !",
+                day: 2
+              },
+              {
+                time: "18:00+",
+                tag: "Fin",
+                title: "😴 Retour paisible vers Raanana",
+                desc: "Les enfants dorment profondément pendant le trajet du retour. On rentre la tête pleine de souvenirs magiques et de moments inoubliables.",
+                day: 2
+              }
+            ]
+          },
+          EN: {
+            title: "🎂 Dad's 60th Surprise Birthday !",
+            subtitle: "👨‍👩‍👧‍👦 Glamping & Wild Adventure at Camp Sahara (Dead Sea)",
+            meta_desc: "Special Event - Camp Sahara Desert Adventure",
+            countdown_title: "Countdown to the big surprise",
+            days: "Days",
+            hours: "Hours",
+            minutes: "Minutes",
+            seconds: "Seconds",
+            change_date: "Change Surprise Date & Time",
+            save: "Save",
+            reset: "Reset",
+            dream_team: "The Dream Team is all set and ready for the adventure! 👨‍👩‍👧‍👦❤️",
+            blessing_title: "✨ Blessing from the Nakache Family ✨",
+            blessing_text: "To our dearest Dad, our pillar, our rock, and our endless source of inspiration. Today, for your 60th birthday, we are all gathered under this magical desert sky to celebrate you with all our love. Thank you for your quiet strength, your boundless generosity, your wise guidance, and your warm laughter that brightens our days. May this next decade bring you outstanding health, endless joy, profound peace of mind, and a thousand more shared travels and unforgettable memories. You are our king, today and always!",
+            blessing_signature: "We love you more than words can say — The Nakache Family ALL ❤️",
+            day1: "Day 1",
+            day2: "Day 2",
+            day1_subtitle: "The Big Departure & The Surprise!",
+            day2_subtitle: "Desert Oasis & Water Hike",
+            packing_title: "🎒 Interactive Packing Checklist",
+            packing_subtitle: "Tick items off as you pack so nothing gets left behind",
+            all: "All",
+            cat_baby: "Baby & Kids 👶",
+            cat_swim: "Swim & Sun 🏖️",
+            cat_hike: "Hike & Desert 🌵",
+            cat_surprise: "Surprise Logistics 🎉",
+            add_item: "Add a custom item...",
+            btn_add: "Add",
+            reset_list: "Reset List",
+            who_brings_what: "🍢 Who is bringing what? (BBQ & Party)",
+            who_subtitle: "Family task allocations and groceries setup",
+            add_task: "Add task item...",
+            assignee_placeholder: "Who?",
+            directions_title: "📍 Addresses & Fast Navigation",
+            directions_subtitle: "Click links to easily launch your GPS",
+            waze_link: "Launch Waze",
+            gmaps_link: "Google Maps",
+            tip: "💡 Tip:",
+            view_details: "Stage Details",
+            completed: "completed",
+            items_left: "left",
+            no_items: "No items in this category yet.",
+            no_tasks: "All clear! Or no tasks added yet.",
+            team_progress: "Dream Team Progress",
+            timeline_steps: [
+              {
+                time: "09:15",
+                tag: "Departure",
+                title: "🚗 Leaving Raanana",
+                desc: "We pack the cars and take off first to beat Dad to Camp Sahara and set up everything nicely! Keep a separate bag with swimsuits and sun cream handy.",
+                day: 1
+              },
+              {
+                time: "10:45 - 12:00",
+                tag: "Break & Lunch",
+                title: "🏃‍♂️ Old Railway Park & Lunch",
+                desc: "A pleasant stop at 'The First Station' in Jerusalem. The 3-year-old gets to burn off steam on the old train tracks and wooden cars while baby rests in the shade.",
+                day: 1
+              },
+              {
+                time: "12:00 - 13:15",
+                tag: "Rest",
+                title: "😴 Car Nap Time",
+                desc: "Descending towards the Dead Sea, the kids will fall fast asleep. Parents get a beautiful, peaceful drive with grand desert panoramas.",
+                day: 1
+              },
+              {
+                time: "13:15",
+                tag: "Setup",
+                title: "⛺ Arriving at Camp Sahara",
+                desc: "Arriving 1.5 hours ahead of Dad! Quick check-in, blowing up party balloons and setting up the 'Happy 60th' surprise banners. Everyone changes to swimwear.",
+                day: 1
+              },
+              {
+                time: "15:00",
+                tag: "SURPRISE !",
+                title: "👑 THE BIG MOMENT: SURPRISE!",
+                desc: "Dad arrives thinking it is just a quiet couple getaway... and our entire loving family jumps out! Big hugs, emotional tears, and then we all dive into the pool! 🥳💦",
+                day: 1,
+                highlight: true
+              },
+              {
+                time: "17:30",
+                tag: "Sunset",
+                title: "🌅 Dead Sea Sunset Photos",
+                desc: "Capture breathtaking family pictures facing the vibrant pink Moav Mountains. The children enjoy playing in the golden sand.",
+                day: 1
+              },
+              {
+                time: "19:30+",
+                tag: "Evening",
+                title: "🔥 BBQ Feast & Campfire",
+                desc: "Fireside dinner at our glamping site. Grilling tasty meats, roasting marshmallows, and sharing stories under a blanket of desert stars.",
+                day: 1
+              },
+              {
+                time: "08:00",
+                tag: "Morning",
+                title: "☕ Peaceful Desert Morning",
+                desc: "A peaceful morning wake up with fresh hot coffee facing the vast dunes and desert horizons.",
+                day: 2
+              },
+              {
+                time: "09:15 - 11:30",
+                tag: "Hike",
+                title: "💦 Water Hike at Ein Gedi",
+                desc: "Easy, shady stroll along Nahal David up to the famous waterfalls. Great splash time for kids and high chances of meeting wild Ibexes!",
+                day: 2
+              },
+              {
+                time: "11:30",
+                tag: "Pool",
+                title: "🏊‍♂️ Camp Sahara Pool Round 2",
+                desc: "Coming back from the beautiful hike, we immediately jump into the camp's pool to cool down before noon heat hits.",
+                day: 2
+              },
+              {
+                time: "13:00 - 15:30",
+                tag: "Nap",
+                title: "🍔 Lunch & Cool Nap",
+                desc: "Light tasty lunch and a well-deserved nap inside our fully air-conditioned, luxury glamping tents.",
+                day: 2
+              },
+              {
+                time: "15:30",
+                tag: "Fun",
+                title: "⛲ Fountain Splash & Check-out",
+                desc: "We check out and drive to the scenic Ein Bokek beachfront promenade. Kids play in the cold fountain water-jets, followed by ice cream!",
+                day: 2
+              },
+              {
+                time: "18:00+",
+                tag: "End",
+                title: "😴 Quiet Road Back to Raanana",
+                desc: "The kids fall fast asleep. A quiet drive home with incredible family bonding memories to cherish forever.",
+                day: 2
+              }
+            ]
+          },
+          HE: {
+            title: "🎂 הפתעה לגיל 60 של אבא!",
+            subtitle: "👨‍👩‍👧‍👦 יומיים של חגיגה משפחתית וגלמפינג בקמפ סהרה (ים המלח)",
+            meta_desc: "אירוע מיוחד - הרפתקה במדבר קמפ סהרה",
+            countdown_title: "ספירה לאחור להפתעה הגדולה",
+            days: "ימים",
+            hours: "שעות",
+            minutes: "דקות",
+            seconds: "שניות",
+            change_date: "שינוי תאריך ההפתעה",
+            save: "שמור",
+            reset: "אתחל",
+            dream_team: "הצוות המשפחתי המדהים מוכן ומזומן לחגיגה הגדולה! 👨‍👩‍👧‍👦❤️",
+            blessing_title: "✨ ברכה חמה ומרגשת מאת משפחת נקש ✨",
+            blessing_text: "לאבא היקר, האהוב והנערץ שלנו, העמוד התומך, העוגן ומקור ההשראה של כולנו. היום, לרגל יום הולדתך ה-60, התכנסנו יחד תחת שמי המדבר הקסומים כדי לחגוג אותך באהבה ענקית. תודה על הכוח השקט שלך, על הנדיבות האינסופית, על העצות המדויקות ועל החיוך שמחמם את ליבנו בכל יום מחדש. אנו מאחלים לך עשור חדש מלא בבריאות איתנה, שמחת חיים, שלווה פנימית ועוד המון טיולים, חוויות ורגעים בלתי נשכחים יחד עם כולנו. בשבילנו אתה תמיד המלך!",
+            blessing_signature: "אוהבים אותך הכי בעולם ובלי גבולות — משפחת נקש כולם ❤️",
+            day1: "יום 1",
+            day2: "יום 2",
+            day1_subtitle: "הנסיעה הגדולה וההפתעה!",
+            day2_subtitle: "נאות מדבר ומסלול מים זורמים",
+            packing_title: "🎒 רשימת ציוד אינטראקטיבית",
+            packing_subtitle: "סמנו וי על הדברים שארזתם כדי להגיע מוכנים ב-100%",
+            all: "הכל",
+            cat_baby: "תינוק וילדים 👶",
+            cat_swim: "בריכה ושמש 🏖️",
+            cat_hike: "מדבר ומסלולים 🌵",
+            cat_surprise: "לוגיסטיקה והפתעה 🎉",
+            add_item: "הוסף פריט חדש...",
+            btn_add: "הוסף",
+            reset_list: "איפוס הרשימה",
+            who_brings_what: "🍢 מי מביא מה? (על האש והאירוע)",
+            who_subtitle: "חלוקת משימות, קניות וארגון משפחתי",
+            add_task: "הוסף משימה/פריט...",
+            assignee_placeholder: "מי?",
+            directions_title: "📍 כתובות וניווט מהיר",
+            directions_subtitle: "לחיצה קלה וה-GPS שלכם מוכן לדרך",
+            waze_link: "ניווט ב-Waze",
+            gmaps_link: "Google Maps",
+            tip: "💡 טיפ חשוב:",
+            view_details: "פרטי השלב",
+            completed: "הושלמו",
+            items_left: "נותרו",
+            no_items: "אין פריטים בקטגוריה זו עדיין.",
+            no_tasks: "הכל מוכן! או שלא נוספו משימות עדיין.",
+            team_progress: "התקדמות ההכנות של המשפחה",
+            timeline_steps: [
+              {
+                time: "09:15",
+                tag: "יוצאים לדרך",
+                title: "🚗 יוצאים מרעננה",
+                desc: "אורזים את המכוניות ויוצאים לדרך ראשונים כדי להקדים את אבא, להתארגן ולחכות לו בקמפ סהרה! שימו תיק נפרד עם בגדי ים וקרם הגנה בשלוף.",
+                day: 1
+              },
+              {
+                time: "10:45 - 12:00",
+                tag: "עצירה ואוכל",
+                title: "🏃‍♂️ פארק המסילה וארוחת צהריים",
+                desc: "עוצרים במתחם 'התחנה הראשונה' בירושלים. בן ה-3 יוציא אנרגיות על פסי הרכבת וקרונות העץ הישנים, בזמן שהתינוק נח בצל הנעים. אוכלים משהו קל במזגן.",
+                day: 1
+              },
+              {
+                time: "12:00 - 13:15",
+                tag: "מנוחה",
+                title: "😴 שנת צהריים באוטו",
+                desc: "בזמן הירידות היפות לים המלח, הילדים ירדמו בקלות בנסיעה. ההורים נהנים מנסיעה שקטה מול נופים מדבריים מהפנטים.",
+                day: 1
+              },
+              {
+                time: "13:15",
+                tag: "התארגנות",
+                title: "⛺ הגעה מוקדמת לקמפ סהרה",
+                desc: "מגיעים שעה וחצי לפני אבא! עושים צ'ק-אין מהיר, מנפחים בלונים ותולים את השלט 'מזל טוב לגיל 60'. כולם כבר מחליפים לבגדי ים.",
+                day: 1
+              },
+              {
+                time: "15:00",
+                tag: "הההפתעה!",
+                title: "👑 הרגע הגדול: הפתעה!",
+                desc: "אבא מגיע לחופשה זוגית רגועה... ופתאום - כל השבט מחכה לו שם! חיבוקים חמים, דמעות של התרגשות, ומיד קופצים כולם יחד לבריכה המרעננת! 🥳💦",
+                day: 1,
+                highlight: true
+              },
+              {
+                time: "17:30",
+                tag: "שקיעה",
+                title: "🌅 סיבוב שקיעה בים המלח",
+                desc: "סשן צילומי משפחה קסום מול הרי מואב המוארים בצבעי ארגמן. הילדים נהנים לשחק בחול הרך.",
+                day: 1
+              },
+              {
+                time: "19:30+",
+                tag: "ערב במדבר",
+                title: "🔥 על האש ומדורה משפחתית",
+                desc: "ארוחת ערב חגיגית ומפנקת במתחם הגלמפינג, צליית מרשמלו על האש, שירה ושיחות כיפיות מתחת לשמיים מלאי כוכבים.",
+                day: 1
+              },
+              {
+                time: "08:00",
+                tag: "בוקר טוב",
+                title: "☕ בוקר רגוע במדבר",
+                desc: "מתעוררים בנחת לקול השקט של המדבר. שותים קפה חם ואיכותי מול הנוף הפתוח של הרי יהודה.",
+                day: 2
+              },
+              {
+                time: "09:15 - 11:30",
+                tag: "טיול מים",
+                title: "💦 טיול מים בעין גדי",
+                desc: "הליכה מוצלת, קלילה וכיפית בנחל דוד עד למפל הראשון. הילדים משתכשכים במים הקרירים, ויש סיכוי מצוין לפגוש יעלים ידידותיים בדרך!",
+                day: 2
+              },
+              {
+                time: "11:30",
+                tag: "בריכה",
+                title: "🏊‍♂️ סבב בריכה שני בקמפ סהרה",
+                desc: "חוזרים מהטיול המקסים וישר קופצים חזרה למים הקרירים של בריכת הקמפ להירגע.",
+                day: 2
+              },
+              {
+                time: "13:00 - 15:30",
+                tag: "מנוחה",
+                title: "🍔 ארוחת צהריים ושנ\"צ ממוזג",
+                desc: "אוכלים ארוחת צהריים קלה ונכנסים לאוהלי הגלמפינג המפוארים והממוזגים לשנת צהריים מפנקת.",
+                day: 2
+              },
+              {
+                time: "15:30",
+                tag: "כיף ומזרקות",
+                title: "⛲ Fountain Splash & Check-out",
+                desc: "עושים צ'ק-אאוט ונוסעים לטיילת החוף היפה של עין בוקק. הילדים נהנים ומשתוללים במזרקות המים החינמיות, ומקנחים בגלידה טעימה וקרה!",
+                day: 2
+              },
+              {
+                time: "18:00+",
+                tag: "חוזרים הביתה",
+                title: "😴 נסיעה חלקה חזרה לרעננה",
+                desc: "הילדים נרדמים עמוק ברכב לכל אורך הדרך. נסיעה שקטה ורגועה להורים עם לב מלא בזיכרונות משפחתיים מדהימים ומרגשים.",
+                day: 2
+              }
+            ]
+          }
+        };
+
+        const DEFAULT_CHECKLIST = [
+          { id: 1, text: "Maillots de bain / Swimwear / בגדי ים", category: "swim", checked: false },
+          { id: 2, text: "Serviettes de plage / Towels / מגבות", category: "swim", checked: false },
+          { id: 3, text: "Crème solaire & Chapeaux / Sunscreen & Hats / קרם הגנה וכובעים", category: "swim", checked: false },
+          { id: 4, text: "Lunettes de soleil / Sunglasses / משקפי שמש", category: "swim", checked: false },
+          { id: 5, text: "Couches bébé & lingettes / Diapers & Wipes / חיתולים ומגבונים לתינוק", category: "baby", checked: false },
+          { id: 6, text: "Poussette compacte / Compact Stroller / טיולון קומפקטי", category: "baby", checked: false },
+          { id: 7, text: "Biberons & Lait / Baby bottles & Milk / בקבוקים ופורמולה לתינוק", category: "baby", checked: false },
+          { id: 8, text: "Jouets de sable / Beach toys / משחקי חול לילד", category: "baby", checked: false },
+          { id: 9, text: "Chaussures d'eau / Water shoes / נעלי מים למסלול עין גדי", category: "hike", checked: false },
+          { id: 10, text: "Sac à dos de rando / Hiking backpack / תיק גב קטן לטיול", category: "hike", checked: false },
+          { id: 11, text: "Gourdes d'eau fraîches / Water bottles / בקבוקי מים תרמיים", category: "hike", checked: false },
+          { id: 12, text: "Banderole & Ballons 60 ans / Banner & Balloons / שלט יום הולדת ובלונים", category: "surprise", checked: false },
+          { id: 13, text: "Bougies & Gâteau d'anniversaire / Birthday cake & Candles / עוגה ונרות", category: "surprise", checked: false },
+          { id: 14, text: "Cadeaux pour Papa / Gifts for Dad / מתנות לאבא", category: "surprise", checked: false },
+          { id: 15, text: "Guimauves & Pics / Marshmallows & Sticks / מרשמלו ושיפודים למדורה", category: "surprise", checked: false },
+        ];
+
+        const DEFAULT_TASKS = [
+          { id: 1, item: "Viandes pour le Barbecue (Poulet, Brochettes, Merguez) / BBQ Meats", name: "Ron & Sarah", completed: false },
+          { id: 2, item: "Salades fraîches, Houmous, Pitas / Fresh Salads, Hummus & Pitas", name: "Mom", completed: true },
+          { id: 3, item: "Boissons fraîches, Bières & Glace / Cold Drinks, Beers & Ice", name: "Dan", completed: false },
+          { id: 4, item: "Enceinte Musique Bluetooth & Guitare / Bluetooth Speaker & Guitar", name: "Chloe & Ron", completed: false },
+          { id: 5, item: "Charbon, Allume-feu & Grill / Charcoal & Firestarters", name: "Dan & Chloe", completed: false },
+          { id: 6, item: "Gâteau surprise & Assiettes carton / Surprise Cake & Paper plates", name: "Mom & Sarah", completed: false }
+        ];
+
+        function App() {
+          const [lang, setLang] = useState('FR');
+          const [currentDayTab, setCurrentDayTab] = useState(1);
+          const [checklist, setChecklist] = useState(DEFAULT_CHECKLIST);
+          const [tasks, setTasks] = useState(DEFAULT_TASKS);
+          
+          const [newChecklistItem, setNewChecklistItem] = useState('');
+          const [newChecklistCategory, setNewChecklistCategory] = useState('swim');
+          const [checklistFilter, setChecklistFilter] = useState('all');
+
+          const [newTaskItem, setNewTaskItem] = useState('');
+          const [newTaskName, setNewTaskName] = useState('');
+
+          const [targetDateStr, setTargetDateStr] = useState("2026-06-14T15:00:00");
+          const [isEditingDate, setIsEditingDate] = useState(false);
+          const [tempDateStr, setTempDateStr] = useState(targetDateStr);
+
+          const [timeLeft, setTimeLeft] = useState({
+            days: 0,
+            hours: 0,
+            minutes: 0,
+            seconds: 0,
+            ended: false
+          });
+
+          useEffect(() => {
+            const calculateTime = () => {
+              const difference = +new Date(targetDateStr) - +new Date();
+              if (difference <= 0) {
+                setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0, ended: true });
+                return;
+              }
+
+              setTimeLeft({
+                days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+                hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+                minutes: Math.floor((difference / 1000 / 60) % 60),
+                seconds: Math.floor((difference / 1000) % 60),
+                ended: false
+              });
+            };
+
+            calculateTime();
+            const interval = setInterval(calculateTime, 1000);
+            return () => clearInterval(interval);
+          }, [targetDateStr]);
+
+          const toggleChecklist = (id) => {
+            setChecklist(prev => prev.map(item => item.id === id ? { ...item, checked: !item.checked } : item));
+          };
+
+          const addChecklistItem = (e) => {
+            e.preventDefault();
+            if (!newChecklistItem.trim()) return;
+            const newItem = {
+              id: Date.now(),
+              text: newChecklistItem,
+              category: newChecklistCategory,
+              checked: false
+            };
+            setChecklist(prev => [...prev, newItem]);
+            setNewChecklistItem('');
+          };
+
+          const deleteChecklistItem = (id) => {
+            setChecklist(prev => prev.filter(item => item.id !== id));
+          };
+
+          const resetChecklist = () => {
+            setChecklist(DEFAULT_CHECKLIST);
+          };
+
+          const toggleTask = (id) => {
+            setTasks(prev => prev.map(t => t.id === id ? { ...t, completed: !t.completed } : t));
+          };
+
+          const addTask = (e) => {
+            e.preventDefault();
+            if (!newTaskItem.trim() || !newTaskName.trim()) return;
+            const nTask = {
+              id: Date.now(),
+              item: newTaskItem,
+              name: newTaskName,
+              completed: false
+            };
+            setTasks(prev => [...prev, nTask]);
+            setNewTaskItem('');
+            setNewTaskName('');
+          };
+
+          const deleteTask = (id) => {
+            setTasks(prev => prev.filter(t => t.id !== id));
+          };
+
+          const resetTasks = () => {
+            setTasks(DEFAULT_TASKS);
+          };
+
+          const isRTL = lang === 'HE';
+
+          const filteredChecklist = checklist.filter(item => {
+            if (checklistFilter === 'all') return true;
+            return item.category === checklistFilter;
+          });
+
+          const packedCount = checklist.filter(i => i.checked).length;
+          const unpackedCount = checklist.length - packedCount;
+          const taskCompletedCount = tasks.filter(t => t.completed).length;
+          const taskTotalCount = tasks.length;
+
+          return (
+            <div className={`min-h-screen bg-[#FDFBF7] text-slate-800 font-sans ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'}>
+              
+              <header className="sticky top-0 z-40 bg-[#FDFBF7]/95 backdrop-blur-md border-b border-orange-100 shadow-sm transition-all">
+                <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="text-2xl">🏜️</span>
+                    <span className="font-extrabold tracking-wider bg-gradient-to-r from-orange-600 to-amber-700 bg-clip-text text-transparent text-lg md:text-xl">
+                      CAMP SAHARA 60
+                    </span>
+                  </div>
+
+                  <div className="flex bg-orange-50 p-1 rounded-full border border-orange-100">
+                    {['FR', 'EN', 'HE'].map((l) => (
+                      <button
+                        key={l}
+                        onClick={() => setLang(l)}
+                        className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all ${
+                          lang === l
+                            ? 'bg-gradient-to-r from-orange-500 to-amber-600 text-white shadow-sm scale-105'
+                            : 'text-amber-800 hover:text-orange-600'
+                        }`}
+                      >
+                        {l === 'FR' ? '🇫🇷 FR' : l === 'EN' ? '🇬🇧 EN' : '🇮🇱 HE'}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </header>
+
+              <div className="relative overflow-hidden bg-gradient-to-b from-[#FFF2E2] via-[#FFE2C2] to-[#FDFBF7] pt-8 pb-16 px-4">
+                <div className="absolute top-10 right-1/4 w-72 h-72 bg-orange-300/30 rounded-full blur-3xl -z-10" />
+                <div className="absolute top-20 left-10 w-48 h-48 bg-amber-400/20 rounded-full blur-2xl -z-10" />
+                
+                <div className="max-w-4xl mx-auto text-center relative z-10">
+                  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-500/10 text-orange-700 font-semibold text-sm mb-4 animate-pulse">
+                    <span>✨</span> {TRANSLATIONS[lang].meta_desc} <span>✨</span>
+                  </div>
+
+                  <h1 className="text-3xl md:text-5xl lg:text-6xl font-black text-amber-950 tracking-tight leading-tight mb-4 drop-shadow-sm">
+                    {TRANSLATIONS[lang].title}
+                  </h1>
+                  
+                  <p className="text-base md:text-xl text-amber-900/80 max-w-2xl mx-auto font-medium mb-8">
+                    {TRANSLATIONS[lang].subtitle}
+                  </p>
+
+                  <div className="flex justify-center gap-4 mb-4">
+                    <span className="text-3xl md:text-4xl animate-bounce">🎈</span>
+                    <span className="text-3xl md:text-4xl delay-100 animate-bounce">⛺</span>
+                    <span className="text-3xl md:text-4xl delay-200 animate-bounce">🏖️</span>
+                  </div>
+                </div>
+              </div>
+
+              <main className="max-w-6xl mx-auto px-4 -mt-10 pb-20 grid grid-cols-1 lg:grid-cols-12 gap-8">
+                
+                <div className="lg:col-span-8 space-y-8">
+                  
+                  <div className="bg-white rounded-3xl p-6 md:p-8 shadow-xl border border-orange-100 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 left-0 h-1.5 bg-gradient-to-r from-orange-400 via-amber-500 to-yellow-400" />
+                    
+                    <div className={`flex flex-col md:flex-row items-center justify-between gap-4 mb-6 ${isRTL ? 'md:flex-row-reverse' : ''}`}>
+                      <div>
+                        <h3 className="text-lg font-bold text-amber-950 flex items-center gap-2">
+                          <span>⏱️</span>
+                          {TRANSLATIONS[lang].countdown_title}
+                        </h3>
+                      </div>
+                      <button 
+                        onClick={() => {
+                          setTempDateStr(targetDateStr);
+                          setIsEditingDate(!isEditingDate);
+                        }} 
+                        className="text-xs font-semibold text-orange-600 hover:text-orange-700 bg-orange-50 px-3 py-1.5 rounded-lg transition-all border border-orange-100"
+                      >
+                        ⚙️ {TRANSLATIONS[lang].change_date}
+                      </button>
+                    </div>
+
+                    {isEditingDate && (
+                      <div className="mb-6 p-4 rounded-2xl bg-orange-50/50 border border-orange-100/80">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-end">
+                          <div>
+                            <label className="block text-xs font-bold text-amber-900 mb-1">
+                              Choose Date & Time (ISO format)
+                            </label>
+                            <input 
+                              type="datetime-local" 
+                              value={tempDateStr}
+                              onChange={(e) => setTempDateStr(e.target.value)}
+                              className="w-full bg-white border border-orange-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 text-slate-700"
+                            />
+                          </div>
+                          <div className="flex gap-2">
+                            <button 
+                              onClick={() => {
+                                setTargetDateStr(tempDateStr);
+                                setIsEditingDate(false);
+                              }} 
+                              className="flex-1 bg-orange-600 text-white font-bold text-xs py-2 px-4 rounded-xl shadow-md hover:bg-orange-700 transition"
+                            >
+                              {TRANSLATIONS[lang].save}
+                            </button>
+                            <button 
+                              onClick={() => {
+                                setTargetDateStr("2026-06-14T15:00:00");
+                                setIsEditingDate(false);
+                              }} 
+                              className="bg-slate-200 text-slate-700 font-bold text-xs py-2 px-3 rounded-xl hover:bg-slate-300 transition"
+                            >
+                              {TRANSLATIONS[lang].reset}
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="grid grid-cols-4 gap-2 md:gap-4 text-center">
+                      {[
+                        { label: TRANSLATIONS[lang].days, value: timeLeft.days, color: 'from-orange-500 to-amber-500' },
+                        { label: TRANSLATIONS[lang].hours, value: timeLeft.hours, color: 'from-amber-500 to-yellow-500' },
+                        { label: TRANSLATIONS[lang].minutes, value: timeLeft.minutes, color: 'from-yellow-500 to-orange-400' },
+                        { label: TRANSLATIONS[lang].seconds, value: timeLeft.seconds, color: 'from-orange-400 to-rose-500' }
+                      ].map((item, idx) => (
+                        <div key={idx} className="bg-gradient-to-b from-[#FFFDF9] to-[#FFF6EB] p-3 md:p-5 rounded-2xl border border-orange-50/60 shadow-inner">
+                          <div className={`text-3xl md:text-5xl font-black bg-gradient-to-r ${item.color} bg-clip-text text-transparent tracking-tight`}>
+                            {String(item.value).padStart(2, '0')}
+                          </div>
+                          <div className="text-[10px] md:text-xs font-bold text-amber-900/60 uppercase tracking-widest mt-1">
+                            {item.label}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {timeLeft.ended && (
+                      <div className="mt-4 p-3 bg-green-50 rounded-xl border border-green-200 text-center text-green-800 font-bold text-sm">
+                        🎉 LE GRAND MOMENT EST ARRIVÉ ! SURPRISE !!! 🎉
+                      </div>
+                    )}
+                  </div>
+
+                  {/* NAKACHE FAMILY BLESSING CARD */}
+                  <div className="bg-gradient-to-r from-amber-50 via-orange-50 to-amber-100 rounded-3xl p-6 md:p-8 shadow-xl border-2 border-amber-300 relative overflow-hidden">
+                    <div className="absolute -top-10 -right-10 w-32 h-32 bg-yellow-300/20 rounded-full blur-2xl" />
+                    <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-orange-400/20 rounded-full blur-2xl" />
+                    
+                    <div className="relative z-10 text-center space-y-4">
+                      <span className="text-4xl animate-pulse block">👑</span>
+                      <h2 className="text-xl md:text-2xl font-black text-amber-950 tracking-tight">
+                        {TRANSLATIONS[lang].blessing_title}
+                      </h2>
+                      
+                      <div className="max-w-2xl mx-auto">
+                        <p className="text-sm md:text-base text-amber-900 leading-relaxed font-serif italic font-medium whitespace-pre-line">
+                          "{TRANSLATIONS[lang].blessing_text}"
+                        </p>
+                      </div>
+
+                      <div className="pt-3 border-t border-amber-200/60 max-w-md mx-auto">
+                        <p className="text-xs md:text-sm font-extrabold text-amber-950 uppercase tracking-wider">
+                          {TRANSLATIONS[lang].blessing_signature}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-white rounded-3xl p-6 shadow-xl border border-orange-50 relative overflow-hidden text-center">
+                    <div className="max-w-md mx-auto relative group">
+                      <div className="aspect-[16/9] w-full bg-gradient-to-br from-amber-100 via-orange-100 to-rose-100 rounded-2xl flex flex-col items-center justify-center p-6 relative overflow-hidden border-2 border-dashed border-orange-200">
+                        <div className="absolute top-4 left-4 text-xl">🐪</div>
+                        <div className="absolute bottom-4 right-4 text-xl">🌵</div>
+                        <div className="absolute top-2 right-8 text-3xl opacity-20">☀️</div>
+                        
+                        <svg className="w-48 h-24 text-amber-800/80 mb-2" fill="none" viewBox="0 0 200 100">
+                          <path d="M40 80c0-15 12-25 25-25s25 10 25 25M70 80c0-10 8-18 18-18s18 8 18 18M105 80c0-12 10-20 22-20s22 8 22 20M140 80c0-8 6-14 14-14s14 6 14 14" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/>
+                          <circle cx="65" cy="45" r="8" fill="currentColor"/>
+                          <circle cx="88" cy="52" r="6" fill="currentColor"/>
+                          <circle cx="127" cy="48" r="7" fill="currentColor"/>
+                          <circle cx="154" cy="56" r="5" fill="currentColor"/>
+                        </svg>
+                        <div className="text-sm font-bold text-amber-950 uppercase tracking-wider">
+                          The Dream Team 👨‍👩‍👧‍👦❤️
+                        </div>
+                      </div>
+                    </div>
+                    <p className="mt-4 text-sm font-bold text-amber-900/70 italic">
+                      {TRANSLATIONS[lang].dream_team}
+                    </p>
+                  </div>
+
+                  <div className="bg-white rounded-3xl p-6 md:p-8 shadow-xl border border-orange-50">
+                    <div className={`flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8 pb-4 border-b border-orange-50 ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
+                      <div>
+                        <h2 className="text-2xl font-black text-amber-950 tracking-tight">
+                          🗺️ {lang === 'HE' ? 'לוח זמנים מפורט' : lang === 'FR' ? 'Programme Détaillé' : 'Detailed Schedule'}
+                        </h2>
+                        <p className="text-xs text-amber-900/60 mt-0.5">
+                          {currentDayTab === 1 ? TRANSLATIONS[lang].day1_subtitle : TRANSLATIONS[lang].day2_subtitle}
+                        </p>
+                      </div>
+
+                      <div className="flex bg-orange-50/80 p-1 rounded-2xl border border-orange-100 w-full sm:w-auto">
+                        <button
+                          onClick={() => setCurrentDayTab(1)}
+                          className={`flex-1 sm:flex-none px-5 py-2.5 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 ${
+                            currentDayTab === 1
+                              ? 'bg-orange-500 text-white shadow-md scale-105'
+                              : 'text-amber-800 hover:text-orange-600'
+                          }`}
+                        >
+                          <span>🌅</span> {TRANSLATIONS[lang].day1}
+                        </button>
+                        <button
+                          onClick={() => setCurrentDayTab(2)}
+                          className={`flex-1 sm:flex-none px-5 py-2.5 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 ${
+                            currentDayTab === 2
+                              ? 'bg-orange-500 text-white shadow-md scale-105'
+                              : 'text-amber-800 hover:text-orange-600'
+                          }`}
+                        >
+                          <span>💦</span> {TRANSLATIONS[lang].day2}
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="relative border-l-2 border-orange-100 ml-4 md:ml-6 pl-6 md:pl-8 space-y-8 py-2">
+                      {TRANSLATIONS[lang].timeline_steps
+                        .filter(step => step.day === currentDayTab)
+                        .map((step, idx) => (
+                          <div 
+                            key={idx} 
+                            className={`relative group transition-all duration-300 hover:translate-x-1 ${
+                              step.highlight ? 'bg-amber-500/10 p-5 rounded-2xl border border-amber-500/20 shadow-sm' : ''
+                            }`}
+                          >
+                            <span className={`absolute -left-[33px] md:-left-[41px] top-1.5 flex items-center justify-center w-6 h-6 rounded-full ring-4 ring-white ${
+                              step.highlight 
+                                ? 'bg-gradient-to-r from-orange-500 to-amber-600 text-white scale-125 shadow-md animate-bounce' 
+                                : 'bg-orange-100 text-orange-600 group-hover:bg-orange-500 group-hover:text-white transition-all'
+                            }`}>
+                              {step.highlight ? '👑' : '•'}
+                            </span>
+
+                            <div className="flex flex-wrap items-center gap-2 mb-1.5">
+                              <span className="text-xs font-bold text-orange-600 bg-orange-50 px-2.5 py-1 rounded-full border border-orange-100/50">
+                                ⏱️ {step.time}
+                              </span>
+                              <span className={`text-xs font-extrabold uppercase tracking-widest px-2.5 py-1 rounded-full ${
+                                step.highlight 
+                                  ? 'bg-amber-50 text-amber-950 border border-amber-300 bg-amber-200' 
+                                  : 'bg-amber-50 text-amber-800 border border-amber-100'
+                              }`}>
+                                {step.tag}
+                              </span>
+                            </div>
+
+                            <h3 className={`text-lg font-extrabold tracking-tight ${step.highlight ? 'text-amber-950 text-xl' : 'text-slate-800'}`}>
+                              {step.title}
+                            </h3>
+                            
+                            <p className="text-sm md:text-base text-slate-600 leading-relaxed mt-1.5 max-w-xl">
+                              {step.desc}
+                            </p>
+
+                            {step.highlight && (
+                              <div className="mt-4 flex flex-wrap gap-2 items-center">
+                                <span className="inline-block px-3 py-1 bg-sky-100 text-sky-800 text-xs font-bold rounded-lg animate-pulse">
+                                  💧 Piscine & Champagne !
+                                </span>
+                                <span className="inline-block px-3 py-1 bg-yellow-100 text-yellow-800 text-xs font-bold rounded-lg">
+                                  🎉 Surprise Générale !
+                                </span>
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                    </div>
+
+                  </div>
+
+                </div>
+
+                <div className="lg:col-span-4 space-y-8">
+                  
+                  <div className="bg-white rounded-3xl p-6 shadow-xl border border-orange-50 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 left-0 h-1 bg-gradient-to-r from-amber-500 to-amber-700" />
+                    <h3 className="text-lg font-extrabold text-amber-950 mb-1 flex items-center gap-2">
+                      <span>🗺️</span> {TRANSLATIONS[lang].directions_title}
+                    </h3>
+                    <p className="text-xs text-amber-900/60 mb-4">{TRANSLATIONS[lang].directions_subtitle}</p>
+
+                    <div className="space-y-4">
+                      <div className="p-3.5 rounded-2xl bg-[#FFFDF9] border border-orange-100/60 shadow-sm">
+                        <div className="text-xs font-bold text-orange-600 uppercase tracking-wide mb-1">
+                          📍 Pause Midi / Lunch Stop
+                        </div>
+                        <h4 className="font-extrabold text-sm text-slate-800">
+                          The First Station (Jerusalem)
+                        </h4>
+                        <p className="text-xs text-slate-500 mb-3">David Remez St 4, Jerusalem</p>
+                        <div className="flex gap-2">
+                          <a 
+                            href="https://waze.com/ul?q=The+First+Station+Jerusalem"
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="flex-1 text-center bg-sky-50 text-sky-700 text-xs font-bold py-2 rounded-xl border border-sky-100 hover:bg-sky-100 transition-all"
+                          >
+                            🚙 Waze
+                          </a>
+                          <a 
+                            href="https://maps.google.com/?q=The+First+Station+Jerusalem"
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="flex-1 text-center bg-orange-50 text-orange-700 text-xs font-bold py-2 rounded-xl border border-orange-100 hover:bg-orange-100 transition-all"
+                          >
+                            🗺️ Maps
+                          </a>
+                        </div>
+                      </div>
+
+                      <div className="p-3.5 rounded-2xl bg-[#FFFDF9] border border-orange-100/60 shadow-sm">
+                        <div className="text-xs font-bold text-orange-600 uppercase tracking-wide mb-1">
+                          ⛺ Le Campement / Campsite
+                        </div>
+                        <h4 className="font-extrabold text-sm text-slate-800">
+                          Camp Sahara Glamping
+                        </h4>
+                        <p className="text-xs text-slate-500 mb-3">Kalia Beach area, Dead Sea</p>
+                        <div className="flex gap-2">
+                          <a 
+                            href="https://waze.com/ul?q=קמפ+סהרה+ים+המלח"
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="flex-1 text-center bg-sky-50 text-sky-700 text-xs font-bold py-2 rounded-xl border border-sky-100 hover:bg-sky-100 transition-all"
+                          >
+                            🚙 Waze
+                          </a>
+                          <a 
+                            href="https://maps.google.com/?q=Camp+Sahara+Dead+Sea"
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="flex-1 text-center bg-orange-50 text-orange-700 text-xs font-bold py-2 rounded-xl border border-orange-100 hover:bg-orange-100 transition-all"
+                          >
+                            🗺️ Maps
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-white rounded-3xl p-6 shadow-xl border border-orange-50">
+                    <div className="flex items-center justify-between mb-2">
+                      <h3 className="text-lg font-extrabold text-amber-950">
+                        {TRANSLATIONS[lang].packing_title}
+                      </h3>
+                      <span className="text-xs font-bold bg-orange-100 text-orange-800 px-2 py-1 rounded-full">
+                        {packedCount}/{checklist.length}
+                      </span>
+                    </div>
+                    <p className="text-xs text-amber-900/60 mb-4">{TRANSLATIONS[lang].packing_subtitle}</p>
+
+                    <div className="flex flex-wrap gap-1.5 mb-4">
+                      {[
+                        { id: 'all', label: TRANSLATIONS[lang].all },
+                        { id: 'baby', label: '👶' },
+                        { id: 'swim', label: '🏖️' },
+                        { id: 'hike', label: '🌵' },
+                        { id: 'surprise', label: '🎉' }
+                      ].map((cat) => (
+                        <button
+                          key={cat.id}
+                          onClick={() => setChecklistFilter(cat.id)}
+                          className={`px-2.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                            checklistFilter === cat.id
+                              ? 'bg-orange-500 text-white shadow-sm'
+                              : 'bg-orange-50 text-amber-800 hover:bg-orange-100/70'
+                          }`}
+                          title={cat.label}
+                        >
+                          {cat.label}
+                        </button>
+                      ))}
+                    </div>
+
+                    <div className="space-y-2 max-h-[300px] overflow-y-auto pr-1">
+                      {filteredChecklist.length === 0 ? (
+                        <p className="text-xs text-slate-400 py-4 text-center">{TRANSLATIONS[lang].no_items}</p>
+                      ) : (
+                        filteredChecklist.map((item) => (
+                          <div 
+                            key={item.id} 
+                            className={`flex items-center justify-between p-2.5 rounded-xl border transition-all ${
+                              item.checked 
+                                ? 'bg-slate-50/70 border-slate-100 text-slate-400 line-through' 
+                                : 'bg-orange-50/20 border-orange-100/50 hover:bg-orange-50/40 text-slate-700'
+                            }`}
+                          >
+                            <label className="flex items-center gap-3 cursor-pointer flex-1 select-none">
+                              <input 
+                                type="checkbox" 
+                                checked={item.checked}
+                                onChange={() => toggleChecklist(item.id)}
+                                className="rounded border-orange-300 text-orange-600 focus:ring-orange-500 h-4 w-4"
+                              />
+                              <span className="text-xs font-medium leading-tight">{item.text}</span>
+                            </label>
+                            <button 
+                              onClick={() => deleteChecklistItem(item.id)}
+                              className="text-slate-400 hover:text-red-500 p-1 text-sm rounded transition"
+                              title="Delete"
+                            >
+                              ✕
+                            </button>
+                          </div>
+                        ))
+                      )}
+                    </div>
+
+                    <form onSubmit={addChecklistItem} className="mt-4 pt-4 border-t border-orange-100/70 space-y-2">
+                      <div className="flex gap-1.5">
+                        <input 
+                          type="text" 
+                          value={newChecklistItem}
+                          onChange={(e) => setNewChecklistItem(e.target.value)}
+                          placeholder={TRANSLATIONS[lang].add_item}
+                          className="flex-1 bg-slate-50 text-slate-700 border border-orange-100/80 rounded-xl px-3 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-orange-400"
+                        />
+                        <select 
+                          value={newChecklistCategory}
+                          onChange={(e) => setNewChecklistCategory(e.target.value)}
+                          className="bg-slate-50 border border-orange-100/80 rounded-xl px-2 py-1.5 text-xs text-slate-600 focus:outline-none focus:ring-2 focus:ring-orange-400"
+                        >
+                          <option value="baby">👶</option>
+                          <option value="swim">🏖️</option>
+                          <option value="hike">🌵</option>
+                          <option value="surprise">🎉</option>
+                        </select>
+                        <button 
+                          type="submit" 
+                          className="bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs px-3 py-1.5 rounded-xl shadow-sm transition"
+                        >
+                          {TRANSLATIONS[lang].btn_add}
+                        </button>
+                      </div>
+
+                      <div className="flex justify-between items-center pt-2">
+                        <button 
+                          type="button" 
+                          onClick={resetChecklist}
+                          className="text-[10px] font-bold text-orange-600/80 hover:text-orange-700 underline"
+                        >
+                          🔄 {TRANSLATIONS[lang].reset_list}
+                        </button>
+                        <span className="text-[10px] text-slate-400 font-semibold italic">
+                          {unpackedCount} {TRANSLATIONS[lang].items_left}
+                        </span>
+                      </div>
+                    </form>
+                  </div>
+
+                  <div className="bg-white rounded-3xl p-6 shadow-xl border border-orange-50">
+                    <div className="flex items-center justify-between mb-2">
+                      <h3 className="text-lg font-extrabold text-amber-950">
+                        {TRANSLATIONS[lang].who_brings_what}
+                      </h3>
+                      <span className="text-xs font-bold bg-amber-100 text-amber-800 px-2.5 py-1 rounded-full">
+                        {taskCompletedCount}/{taskTotalCount}
+                      </span>
+                    </div>
+                    <p className="text-xs text-amber-900/60 mb-4">{TRANSLATIONS[lang].who_subtitle}</p>
+
+                    <div className="space-y-3 max-h-[320px] overflow-y-auto pr-1">
+                      {tasks.length === 0 ? (
+                        <p className="text-xs text-slate-400 py-4 text-center">{TRANSLATIONS[lang].no_tasks}</p>
+                      ) : (
+                        tasks.map((task) => (
+                          <div 
+                            key={task.id} 
+                            className={`p-3 rounded-2xl border transition-all ${
+                              task.completed 
+                                ? 'bg-emerald-50/40 border-emerald-100 text-slate-400' 
+                                : 'bg-[#FFFDF9] border-orange-100/50 hover:bg-[#FFFBF2] text-slate-700'
+                            }`}
+                          >
+                            <div className="flex items-start justify-between gap-2">
+                              <label className="flex items-start gap-2.5 cursor-pointer flex-1 select-none">
+                                <input 
+                                  type="checkbox" 
+                                  checked={task.completed}
+                                  onChange={() => toggleTask(task.id)}
+                                  className="mt-0.5 rounded border-orange-300 text-emerald-600 focus:ring-emerald-500 h-4 w-4"
+                                />
+                                <div className="text-xs">
+                                  <p className={`font-semibold leading-tight ${task.completed ? 'line-through text-slate-400' : 'text-slate-800'}`}>
+                                    {task.item}
+                                  </p>
+                                  <div className="flex items-center gap-1.5 mt-1">
+                                    <span className="text-[10px] font-extrabold text-amber-800 bg-amber-50 px-2 py-0.5 rounded border border-amber-100/50">
+                                      👤 {task.name}
+                                    </span>
+                                    {task.completed && (
+                                      <span className="text-[9px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded">
+                                        {TRANSLATIONS[lang].completed}
+                                      </span>
+                                    )}
+                                  </div>
+                                </div>
+                              </label>
+                              <button 
+                                onClick={() => deleteTask(task.id)}
+                                className="text-slate-400 hover:text-red-500 text-xs p-1 rounded transition"
+                              >
+                                ✕
+                              </button>
+                            </div>
+                          </div>
+                        ))
+                      )}
+                    </div>
+
+                    <form onSubmit={addTask} className="mt-4 pt-4 border-t border-orange-100/70 space-y-2">
+                      <div className="space-y-2">
+                        <input 
+                          type="text" 
+                          value={newTaskItem}
+                          onChange={(e) => setNewTaskItem(e.target.value)}
+                          placeholder={TRANSLATIONS[lang].add_task}
+                          className="w-full bg-slate-50 text-slate-700 border border-orange-100/80 rounded-xl px-3 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-orange-400"
+                        />
+                        <div className="flex gap-2">
+                          <input 
+                            type="text" 
+                            value={newTaskName}
+                            onChange={(e) => setNewTaskName(e.target.value)}
+                            placeholder={TRANSLATIONS[lang].assignee_placeholder}
+                            className="flex-1 bg-slate-50 text-slate-700 border border-orange-100/80 rounded-xl px-3 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-orange-400"
+                          />
+                          <button 
+                            type="submit" 
+                            className="bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs px-4 py-1.5 rounded-xl shadow-sm transition"
+                          >
+                            {TRANSLATIONS[lang].btn_add}
+                          </button>
+                        </div>
+                      </div>
+
+                      <div className="pt-2 text-right">
+                        <button 
+                          type="button" 
+                          onClick={resetTasks}
+                          className="text-[10px] font-bold text-amber-700/80 hover:text-amber-800 underline"
+                        >
+                          🔄 {lang === 'HE' ? 'איפוס משימות' : 'Reset Task Allocations'}
+                        </button>
+                      </div>
+                    </form>
+
+                  </div>
+
+                </div>
+
+              </main>
+
+              <footer className="bg-amber-950 text-amber-200/70 py-10 px-4 mt-12 text-center border-t border-amber-900">
+                <div className="max-w-2xl mx-auto space-y-2">
+                  <p className="font-extrabold tracking-widest text-white text-sm">
+                    ⛰️ SURPRISE CAMP SAHARA 2026 🌌
+                  </p>
+                  <p className="text-xs">
+                    Famille Unie, Souvenirs Éternels • Family Teamwork is Dreamwork
+                  </p>
+                  <div className="text-[10px] text-amber-400/50 mt-4">
+                    Designed for Papa's 60th Surprise Celebration in the Judean Desert & Dead Sea Oasis.
+                  </div>
+                </div>
+              </footer>
+
+            </div>
+          );
+        }
+
+        // Render the application into root element
+        const container = document.getElementById('root');
+        const root = ReactDOM.createRoot(container);
+        root.render(<App />);
+    </script>
+</body>
+</html>
