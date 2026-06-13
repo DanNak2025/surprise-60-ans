@@ -4,11 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Surprise 60 ans - Camp Sahara Mer Morte</title>
-    <!-- Tailwind CSS Play CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts for gorgeous typography (Inter for English/French, Assistant for Hebrew) -->
     <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <script>
@@ -112,14 +109,12 @@
 </head>
 <body class="text-slate-800 min-h-screen pb-16 antialiased">
 
-    <!-- STICKY TOP ACTIONS -->
     <div class="sticky top-0 z-50 glass-card px-4 py-3 shadow-md flex justify-between items-center transition-all duration-300">
         <div class="flex items-center space-x-2">
             <span class="text-xl">🏜️</span>
             <span class="font-extrabold text-sm tracking-wider uppercase text-deepblue-700 hidden sm:inline-block">Camp Sahara Desert Adventure</span>
         </div>
         
-        <!-- Language Switcher -->
         <div class="bg-slate-100 p-1 rounded-full flex gap-1 shadow-inner border border-slate-200">
             <button id="lang-btn-fr" class="px-4 py-1.5 rounded-full text-xs font-bold uppercase transition-all duration-300 flex items-center gap-1.5 bg-white text-deepblue-600 shadow" onclick="switchLang('fr')">
                 <span>🇫🇷</span> <span>FR</span>
@@ -130,22 +125,18 @@
         </div>
     </div>
 
-    <!-- HERO SECTION -->
     <header class="relative gradient-bg text-white overflow-hidden py-12 md:py-20 px-4 text-center">
-        <!-- Abstract desert wave graphics in background -->
         <div class="absolute inset-0 opacity-10 pointer-events-none">
             <svg class="absolute bottom-0 w-full" viewBox="0 0 1440 320" fill="currentColor">
                 <path d="M0,96L80,122.7C160,149,320,203,480,218.7C640,235,800,213,960,181.3C1120,149,1280,107,1360,85.3L1440,64L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"></path>
             </svg>
         </div>
         
-        <!-- FLOATING BALLOON EMOJIS IN THE BACKGROUND -->
         <div class="absolute top-10 left-10 text-3xl animate-bounce duration-1000 opacity-30">🎈</div>
         <div class="absolute top-20 right-12 text-4xl animate-bounce duration-700 opacity-40">⛺</div>
         <div class="absolute bottom-8 left-1/4 text-2xl opacity-25">🏖️</div>
 
         <div class="max-w-4xl mx-auto relative z-10">
-            <!-- French Header Content -->
             <div id="header-fr" class="lang-content space-y-3">
                 <span class="bg-desert-500 text-white text-xs font-extrabold px-3 py-1.5 rounded-full uppercase tracking-widest shadow-md">Évènement Exceptionnel</span>
                 <h1 class="text-3xl md:text-5xl font-black tracking-tight leading-tight">
@@ -156,7 +147,6 @@
                 </p>
             </div>
             
-            <!-- Hebrew Header Content -->
             <div id="header-he" class="lang-content space-y-3 hidden" dir="rtl">
                 <span class="bg-desert-500 text-white text-xs font-extrabold px-3 py-1.5 rounded-full uppercase tracking-widest shadow-md">אירוע מיוחד</span>
                 <h1 class="text-3xl md:text-5xl font-black tracking-tight leading-tight">
@@ -167,14 +157,7 @@
                 </p>
             </div>
 
-            <!-- FAMILY PHOTO -->
-            <div class="mt-8 max-w-2xl mx-auto rounded-3xl overflow-hidden shadow-2xl border-4 border-white/20">
-                <img src="famille.jpg" alt="Photo de famille" class="w-full h-auto object-cover">
-            </div>
-
-            <!-- COUNTDOWN COMPONENT -->
             <div class="mt-8 max-w-md mx-auto glass-card text-slate-800 rounded-3xl p-5 shadow-2xl relative">
-                <!-- Config button for target date -->
                 <button class="absolute top-3 right-3 text-xs text-slate-400 hover:text-deepblue-500 transition-colors" onclick="openDateModal()" title="Modifier la date / שנה תאריך">
                     <i class="fa-solid fa-clock-rotate-left text-sm"></i>
                 </button>
@@ -208,7 +191,6 @@
         </div>
     </header>
 
-    <!-- DATE CONFIGURATION MODAL (Saves to LocalStorage) -->
     <div id="date-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-3xl p-6 w-full max-w-sm shadow-2xl space-y-4">
             <div class="flex justify-between items-center border-b pb-3">
@@ -226,18 +208,14 @@
         </div>
     </div>
 
-    <!-- MAIN BODY CONTAINER -->
     <div class="container max-w-4xl mx-auto px-4 mt-8">
 
-        <!-- FAMILY PHOTO INTEGRATION -->
         <div class="max-w-xl mx-auto -mt-16 md:-mt-20 mb-10 px-4 relative z-20">
             <div class="bg-white rounded-3xl p-3 shadow-2xl border border-slate-100 overflow-hidden transform hover:scale-[1.01] transition-all duration-300">
                 <div class="relative rounded-2xl overflow-hidden aspect-[4/3] bg-gradient-to-br from-desert-100 to-deepblue-100">
-                    <img src="Photographer Images May 25 2026.jpg" 
+                    <img src="famille.jpg" 
                          alt="La Dream Team / המשפחה" 
-                         class="w-full h-full object-cover"
-                         onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=800&q=80';">
-                    <!-- Gradient overlay on the image -->
+                         class="w-full h-full object-cover">
                     <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent p-4 pt-12 text-white text-center">
                         <p id="photo-caption-fr" class="lang-content text-sm md:text-base font-bold tracking-wide">
                             La Dream Team au complet, prête pour l'aventure ! 👨‍👩‍👧‍👦❤️
@@ -250,7 +228,6 @@
             </div>
         </div>
 
-        <!-- DAY SELECTOR TABS -->
         <div class="grid grid-cols-2 gap-4 mb-8">
             <button id="btn-j1" class="tab-btn active bg-desert-500 text-white font-black py-4 px-6 rounded-2xl shadow-lg transform hover:scale-[1.02] active:scale-95 transition-all flex flex-col items-center gap-1" onclick="switchTab('j1')">
                 <span class="text-xs uppercase tracking-widest opacity-80">Phase 1</span>
@@ -266,15 +243,10 @@
             </button>
         </div>
 
-        <!-- ================= TIMELINE SECTIONS ================= -->
-        
-        <!-- FRENCH MAIN CONTENT CONTAINER -->
         <div id="content-fr" class="lang-content space-y-6">
             
-            <!-- JOUR 1 FRENCH -->
             <div id="j1-fr" class="timeline space-y-4">
                 
-                <!-- Card 1 -->
                 <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-l-4 border-desert-500 hover:shadow-md transition-all duration-300 relative">
                     <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
                         <span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5 shadow-sm">
@@ -292,7 +264,6 @@
                     </div>
                 </div>
 
-                <!-- Card 2 -->
                 <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-l-4 border-desert-500 hover:shadow-md transition-all duration-300">
                     <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
                         <span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5">
@@ -306,7 +277,6 @@
                     <p class="event-desc text-slate-600 mt-2">Arrêt à "The First Station" à Jérusalem. Le petit de 3 ans se défoule sur l'ancienne voie ferrée et les wagons en bois. Le bébé reste à l'ombre. On mange rapidement (pizzas/burgers) au frais.</p>
                 </div>
 
-                <!-- Card 3 -->
                 <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-l-4 border-desert-500 hover:shadow-md transition-all duration-300">
                     <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
                         <span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5">
@@ -320,7 +290,6 @@
                     <p class="event-desc text-slate-600 mt-2">Pendant la descente vers la mer Morte, les enfants (repus et fatigués) s'endorment à coup sûr. Route tranquille pour les parents.</p>
                 </div>
 
-                <!-- Card 4 -->
                 <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-l-4 border-desert-500 hover:shadow-md transition-all duration-300">
                     <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
                         <span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5">
@@ -334,7 +303,6 @@
                     <p class="event-desc text-slate-600 mt-2">On arrive 1h30 avant Papa ! Check-in, installation des ballons, de la banderole "Joyeux 60 ans" et du verre de l'amitié prêt sur la table. Tout le monde se met déjà en maillot de bain.</p>
                 </div>
 
-                <!-- Card 5 (THE BIG SURPRISE!) -->
                 <div class="event-card bg-gradient-to-br from-emerald-50 to-emerald-100/50 rounded-3xl p-6 shadow-lg border-l-8 border-emeraldaccent-500 hover:shadow-xl transition-all duration-300 surprise-glow transform hover:-translate-y-1">
                     <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
                         <span class="time-badge bg-emeraldaccent-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5 shadow-md">
@@ -345,10 +313,9 @@
                         </span>
                     </div>
                     <h3 class="event-title text-2xl font-black text-emeraldaccent-600 flex items-center gap-2">👑 LE GRAND MOMENT : SURPRISE !</h3>
-                    <p class="event-desc text-slate-700 font-medium mt-2">Papa arrive au Camp Sahara (il pense être seul avec Maman)... et TOUT LE MONDE est là ! Émotion garantie, gros câlins, puis on saute TOUS ensemble dans la piscine pour fêter ça ! 🥳💦</p>
+                    <p class="event-desc text-slate-700 font-medium mt-2">Papa arrive au Camp Sahara (il thinks être seul avec Maman)... et TOUT LE MONDE est là ! Émotion garantie, gros câlins, puis on saute TOUS ensemble dans la piscine pour fêter ça ! 🥳💦</p>
                 </div>
 
-                <!-- Card 6 -->
                 <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-l-4 border-desert-500 hover:shadow-md transition-all duration-300">
                     <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
                         <span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5">
@@ -362,7 +329,6 @@
                     <p class="event-desc text-slate-600 mt-2">La chaleur tombe. Petite séance photo en famille face aux montagnes de Moav. Le petit joue dans la boue/sable (Pas de baignade Mer Morte pour les petits !).</p>
                 </div>
 
-                <!-- Card 7 -->
                 <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-l-4 border-desert-500 hover:shadow-md transition-all duration-300">
                     <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
                         <span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5">
@@ -377,10 +343,8 @@
                 </div>
             </div>
 
-            <!-- JOUR 2 FRENCH -->
             <div id="j2-fr" class="timeline space-y-4 hidden">
                 
-                <!-- Card 1 -->
                 <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-l-4 border-seablue-300 hover:shadow-md transition-all duration-300">
                     <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
                         <span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5">
@@ -394,7 +358,6 @@
                     <p class="event-desc text-slate-600 mt-2">Petit-déjeuner tranquille sur le campement et café des parents face à l'immensité du désert.</p>
                 </div>
 
-                <!-- Card 2 -->
                 <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-l-4 border-seablue-300 hover:shadow-md transition-all duration-300">
                     <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
                         <span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5">
@@ -412,7 +375,6 @@
                     </div>
                 </div>
 
-                <!-- Card 3 -->
                 <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-l-4 border-seablue-300 hover:shadow-md transition-all duration-300">
                     <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
                         <span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5">
@@ -426,7 +388,6 @@
                     <p class="event-desc text-slate-600 mt-2">De retour de rando, on plonge directement dans l'eau fraîche. Super moment de complicité entre Papy et ses petits-enfants dans l'eau.</p>
                 </div>
 
-                <!-- Card 4 -->
                 <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-l-4 border-seablue-300 hover:shadow-md transition-all duration-300">
                     <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
                         <span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5">
@@ -440,7 +401,6 @@
                     <p class="event-desc text-slate-600 mt-2">Repas léger sur le camp puis sieste bien méritée pour tout le monde dans les tentes climatisées pour recharger les batteries.</p>
                 </div>
 
-                <!-- Card 5 -->
                 <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-l-4 border-seablue-300 hover:shadow-md transition-all duration-300">
                     <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
                         <span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5">
@@ -454,7 +414,6 @@
                     <p class="event-desc text-slate-600 mt-2">On quitte le glamping direction la promenade d'Ein Bokek (100% poussette). Le grand s'amuse comme un fou dans les jets d'eau gratuits qui sortent du sol. Glace de fin de séjour avec Papy !</p>
                 </div>
 
-                <!-- Card 6 -->
                 <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-l-4 border-seablue-300 hover:shadow-md transition-all duration-300">
                     <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
                         <span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5">
@@ -468,7 +427,6 @@
                     <p class="event-desc text-slate-600 mt-2">On rince les enfants aux douches de la plage, habillage en vêtements confortables/pyjamas pour la route, et changement des couches.</p>
                 </div>
 
-                <!-- Card 7 -->
                 <div class="event-card bg-gradient-to-br from-deepblue-50 to-white rounded-3xl p-6 shadow-sm border-l-8 border-deepblue-500 hover:shadow-md transition-all duration-300">
                     <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
                         <span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5 shadow-sm">
@@ -485,13 +443,10 @@
 
         </div>
 
-        <!-- HEBREW MAIN CONTENT CONTAINER -->
         <div id="content-he" class="lang-content hidden space-y-6" dir="rtl">
             
-            <!-- JOUR 1 HEBREW -->
             <div id="j1-he" class="timeline space-y-4">
                 
-                <!-- Card 1 -->
                 <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-r-4 border-desert-500 hover:shadow-md transition-all duration-300">
                     <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
                         <span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5 shadow-sm">
@@ -509,7 +464,6 @@
                     </div>
                 </div>
 
-                <!-- Card 2 -->
                 <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-r-4 border-desert-500 hover:shadow-md transition-all duration-300">
                     <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
                         <span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5">
@@ -520,10 +474,9 @@
                         </span>
                     </div>
                     <h3 class="event-title text-xl font-black text-deepblue-700 font-hebrew">🏃‍♂️ פארק המסילה וארוחת צהריים</h3>
-                    <p class="event-desc text-slate-600 mt-2 font-hebrew">עוצרים במתחם התחנה הראשונה בירושלים. בן ה-3 רץ ומשתולל על המסילה הישנה וקרונות הרכבת. התינוק בצל. אוכלים משהו זריז (פיצה/המבורגר) במזגן.</p>
+                    <p class="event-desc text-slate-600 mt-2 font-hebrew">עוצרים בממתחם התחנה הראשונה בירושלים. בן ה-3 רץ ומשתולל על המסילה הישנה וקרונות הרכבת. התינוק בצל. אוכלים משהו זריז (פיצה/המבורגר) במזגן.</p>
                 </div>
 
-                <!-- Card 3 -->
                 <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-r-4 border-desert-500 hover:shadow-md transition-all duration-300">
                     <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
                         <span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5">
@@ -537,7 +490,6 @@
                     <p class="event-desc text-slate-600 mt-2 font-hebrew">בזמן הנסיעה והירידות לכיוון ים המלח, הילדים (שבעים ועייפים) נרדמים בשניות. נסיעה שקטה להורים.</p>
                 </div>
 
-                <!-- Card 4 -->
                 <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-r-4 border-desert-500 hover:shadow-md transition-all duration-300">
                     <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
                         <span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5">
@@ -551,7 +503,6 @@
                     <p class="event-desc text-slate-600 mt-2 font-hebrew">מגששים שעה וחצי לפני אבא! עושים צ'ק-אין, תולים שלט "מזל טוב בן 60", בלונים, ופותחים בקבוק יין/בירה על השולחן. כולם כבר מחליפים לבגדי ים.</p>
                 </div>
 
-                <!-- Card 5 (THE BIG SURPRISE!) -->
                 <div class="event-card bg-gradient-to-br from-emerald-50 to-emerald-100/50 rounded-3xl p-6 shadow-lg border-r-8 border-emeraldaccent-500 hover:shadow-xl transition-all duration-300 surprise-glow transform hover:-translate-y-1">
                     <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
                         <span class="time-badge bg-emeraldaccent-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5 shadow-md">
@@ -565,7 +516,6 @@
                     <p class="event-desc text-slate-700 font-medium mt-2 font-hebrew">אבא נכנס למתחם קמפ סהרה (בטוח שהוא מגיע רק לחופשה זוגית) ופתאום - הפתעה! כל השבט מחכה לו. חיבוקים, דמעות, וישר קופצים כולם יחד לבריכה לחגוג! 🥳💦</p>
                 </div>
 
-                <!-- Card 6 -->
                 <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-r-4 border-desert-500 hover:shadow-md transition-all duration-300">
                     <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
                         <span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5">
@@ -579,7 +529,6 @@
                     <p class="event-desc text-slate-600 mt-2 font-hebrew">החום נשבר. נוסעים כמה דקות לחוף הקרוב לתמונות משפחתיות מדהימות מול הרי מואב. בן ה-3 משחק בחול/בוץ (לא מכניסים קטנים למים המלוחים!).</p>
                 </div>
 
-                <!-- Card 7 -->
                 <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-r-4 border-desert-500 hover:shadow-md transition-all duration-300">
                     <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
                         <span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5">
@@ -594,10 +543,8 @@
                 </div>
             </div>
 
-            <!-- JOUR 2 HEBREW -->
             <div id="j2-he" class="timeline space-y-4 hidden">
                 
-                <!-- Card 1 -->
                 <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-r-4 border-seablue-300 hover:shadow-md transition-all duration-300">
                     <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
                         <span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5">
@@ -611,7 +558,6 @@
                     <p class="event-desc text-slate-600 mt-2 font-hebrew font-sans">מתעוררים בנחת בקמפ סהרה, ארוחת בוקר קלילה במתחם וקפה מעולה להורים מול הנוף הפתוח.</p>
                 </div>
 
-                <!-- Card 2 -->
                 <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-r-4 border-seablue-300 hover:shadow-md transition-all duration-300">
                     <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
                         <span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5">
@@ -629,7 +575,6 @@
                     </div>
                 </div>
 
-                <!-- Card 3 -->
                 <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-r-4 border-seablue-300 hover:shadow-md transition-all duration-300">
                     <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
                         <span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5">
@@ -643,7 +588,6 @@
                     <p class="event-desc text-slate-600 mt-2 font-hebrew">חוזרים מהטיול מיוזעים וישר קופצים למים הקרירים של הבריכה. זמן איכות מדהים של סבא עם הנכדים במים במתחם.</p>
                 </div>
 
-                <!-- Card 4 -->
                 <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-r-4 border-seablue-300 hover:shadow-md transition-all duration-300">
                     <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
                         <span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5">
@@ -657,7 +601,6 @@
                     <p class="event-desc text-slate-600 mt-2 font-hebrew">אוכלים משהו קל במתחם ונכנסים לאוהלים הממוזגים למנוחת צהריים טובה לקטנים ולמבוגרים.</p>
                 </div>
 
-                <!-- Card 5 -->
                 <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-r-4 border-seablue-300 hover:shadow-md transition-all duration-300">
                     <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
                         <span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5">
@@ -671,7 +614,6 @@
                     <p class="event-desc text-slate-600 mt-2 font-hebrew">אורזים ונוסעים לטיילת עין בוקק (נגישה לחלוטין לעגלות). בן ה-3 ישתולל וירוץ בין מזרקות המים המתוקים שיוצאות מהרצפה. מקנחים בגלידה חגיגית עם סבא!</p>
                 </div>
 
-                <!-- Card 6 -->
                 <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-r-4 border-seablue-300 hover:shadow-md transition-all duration-300">
                     <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
                         <span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5">
@@ -682,10 +624,9 @@
                         </span>
                     </div>
                     <h3 class="event-title text-xl font-black text-deepblue-700 font-hebrew font-sans">🚿 מקלחים ומלבישים</h3>
-                    <p class="event-desc text-slate-600 mt-2 font-hebrew">שוטפים את הילדים מהחול במקלחות החוף, מלבישים בבגדים נוחים (בגדי פיג'מה) לנסיעה ומחליפים טיטולים.</p>
+                    <p class="event-desc text-slate-600 mt-2 font-hebrew">שוטפים את הילדים מהחול במקלחים החוף, מלבישים בבגדים נוחים (בגדי פיג'מה) לנסיעה ומחליפים טיטולים.</p>
                 </div>
 
-                <!-- Card 7 -->
                 <div class="event-card bg-gradient-to-br from-deepblue-50 to-white rounded-3xl p-6 shadow-sm border-r-8 border-deepblue-500 hover:shadow-md transition-all duration-300">
                     <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
                         <span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5 shadow-sm">
@@ -702,7 +643,6 @@
 
         </div>
 
-        <!-- PACKING LIST SECTION (Saves to LocalStorage) -->
         <section class="mt-12 bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-slate-100">
             <div class="flex items-center gap-3 mb-6">
                 <span class="text-3xl">🎒</span>
@@ -714,7 +654,6 @@
                 </div>
             </div>
 
-            <!-- Categories pills -->
             <div id="checklist-cats-fr" class="lang-content flex flex-wrap gap-2 mb-6">
                 <button onclick="filterChecklist('all')" class="check-cat-btn active bg-deepblue-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-sm transition-all" data-cat="all">Tout</button>
                 <button onclick="filterChecklist('kids')" class="check-cat-btn bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold px-3 py-1.5 rounded-full transition-all" data-cat="kids">Bébé & Enfants 👶</button>
@@ -731,12 +670,9 @@
                 <button onclick="filterChecklist('surprise')" class="check-cat-btn bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold px-3 py-1.5 rounded-full transition-all font-hebrew" data-cat="surprise">לוגיסטיקה והפתעה 🎉</button>
             </div>
 
-            <!-- CHECKLIST ITEMS CONTAINER -->
             <div id="checklist-items" class="space-y-2.5 max-h-[350px] overflow-y-auto pr-2">
-                <!-- Will be dynamically populated to handle interactive storage -->
-            </div>
+                </div>
             
-            <!-- Reset Button for Checklist -->
             <div class="mt-5 pt-4 border-t border-slate-100 flex justify-end">
                 <button onclick="resetChecklist()" class="text-xs text-slate-400 hover:text-red-500 transition-colors flex items-center gap-1">
                     <i class="fa-solid fa-trash-can"></i> 
@@ -746,7 +682,6 @@
             </div>
         </section>
 
-        <!-- WHO BRINGS WHAT SECTION -->
         <section class="mt-8 bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-slate-100">
             <div class="flex items-center gap-3 mb-6">
                 <span class="text-3xl">🍢</span>
@@ -759,11 +694,9 @@
             </div>
 
             <div id="coordination-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <!-- Dynamically populated in JavaScript -->
-            </div>
+                </div>
         </section>
 
-        <!-- ROAD TRIP QUICK LINKS (MAPS / WAZE) -->
         <section class="mt-8 bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-slate-100">
             <div class="flex items-center gap-3 mb-6">
                 <span class="text-3xl">📍</span>
@@ -776,7 +709,6 @@
             </div>
 
             <div class="space-y-3">
-                <!-- Route Step 1 -->
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-slate-50 hover:bg-slate-100/75 rounded-2xl border border-slate-100 transition-colors gap-3">
                     <div class="flex items-start gap-3">
                         <span class="text-xl bg-desert-100 text-desert-500 w-10 h-10 rounded-xl flex items-center justify-center font-bold">1</span>
@@ -792,13 +724,12 @@
                         <a href="https://waze.com/ul?q=The+First+Station+Jerusalem" target="_blank" class="px-3.5 py-1.5 bg-[#33ccff] text-white text-xs font-extrabold rounded-xl hover:opacity-90 flex items-center gap-1 shadow-sm transition-opacity">
                             <i class="fa-brands fa-waze"></i> Waze
                         </a>
-                        <a href="https://maps.google.com/?q=The+First+Station+Jerusalem" target="_blank" class="px-3.5 py-1.5 bg-slate-200 text-slate-700 text-xs font-extrabold rounded-xl hover:bg-slate-300 flex items-center gap-1 transition-colors">
+                        <a href="https://www.google.com/maps/search/?api=1&query=The+First+Station+Jerusalem" target="_blank" class="px-3.5 py-1.5 bg-slate-200 text-slate-700 text-xs font-extrabold rounded-xl hover:bg-slate-300 flex items-center gap-1 transition-colors">
                             <i class="fa-solid fa-map-location-dot"></i> Maps
                         </a>
                     </div>
                 </div>
 
-                <!-- Route Step 2 -->
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-slate-50 hover:bg-slate-100/75 rounded-2xl border border-slate-100 transition-colors gap-3">
                     <div class="flex items-start gap-3">
                         <span class="text-xl bg-desert-100 text-desert-500 w-10 h-10 rounded-xl flex items-center justify-center font-bold">2</span>
@@ -815,13 +746,12 @@
                         <a href="https://waze.com/ul?q=קמפ+סהרה+ים+המלח" target="_blank" class="px-3.5 py-1.5 bg-[#33ccff] text-white text-xs font-extrabold rounded-xl hover:opacity-90 flex items-center gap-1 shadow-sm transition-opacity">
                             <i class="fa-brands fa-waze"></i> Waze
                         </a>
-                        <a href="https://maps.google.com/?q=Camp+Sahara+Dead+Sea" target="_blank" class="px-3.5 py-1.5 bg-slate-200 text-slate-700 text-xs font-extrabold rounded-xl hover:bg-slate-300 flex items-center gap-1 transition-colors">
+                        <a href="https://www.google.com/maps/search/?api=1&query=קמפ+סהרה+ים+המלח" target="_blank" class="px-3.5 py-1.5 bg-slate-200 text-slate-700 text-xs font-extrabold rounded-xl hover:bg-slate-300 flex items-center gap-1 transition-colors">
                             <i class="fa-solid fa-map-location-dot"></i> Maps
                         </a>
                     </div>
                 </div>
 
-                <!-- Route Step 3 -->
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-slate-50 hover:bg-slate-100/75 rounded-2xl border border-slate-100 transition-colors gap-3">
                     <div class="flex items-start gap-3">
                         <span class="text-xl bg-desert-100 text-desert-500 w-10 h-10 rounded-xl flex items-center justify-center font-bold">3</span>
@@ -838,13 +768,12 @@
                         <a href="https://waze.com/ul?q=Ein+Gedi+Nature+Reserve" target="_blank" class="px-3.5 py-1.5 bg-[#33ccff] text-white text-xs font-extrabold rounded-xl hover:opacity-90 flex items-center gap-1 shadow-sm transition-opacity">
                             <i class="fa-brands fa-waze"></i> Waze
                         </a>
-                        <a href="https://maps.google.com/?q=Ein+Gedi+Nature+Reserve" target="_blank" class="px-3.5 py-1.5 bg-slate-200 text-slate-700 text-xs font-extrabold rounded-xl hover:bg-slate-300 flex items-center gap-1 transition-colors">
+                        <a href="https://www.google.com/maps/search/?api=1&query=Ein+Gedi+Nature+Reserve" target="_blank" class="px-3.5 py-1.5 bg-slate-200 text-slate-700 text-xs font-extrabold rounded-xl hover:bg-slate-300 flex items-center gap-1 transition-colors">
                             <i class="fa-solid fa-map-location-dot"></i> Maps
                         </a>
                     </div>
                 </div>
 
-                <!-- Route Step 4 -->
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-slate-50 hover:bg-slate-100/75 rounded-2xl border border-slate-100 transition-colors gap-3">
                     <div class="flex items-start gap-3">
                         <span class="text-xl bg-desert-100 text-desert-500 w-10 h-10 rounded-xl flex items-center justify-center font-bold">4</span>
@@ -861,7 +790,7 @@
                         <a href="https://waze.com/ul?q=Ein+Bokek+Beach" target="_blank" class="px-3.5 py-1.5 bg-[#33ccff] text-white text-xs font-extrabold rounded-xl hover:opacity-90 flex items-center gap-1 shadow-sm transition-opacity">
                             <i class="fa-brands fa-waze"></i> Waze
                         </a>
-                        <a href="https://maps.google.com/?q=Ein+Bokek+Beach" target="_blank" class="px-3.5 py-1.5 bg-slate-200 text-slate-700 text-xs font-extrabold rounded-xl hover:bg-slate-300 flex items-center gap-1 transition-colors">
+                        <a href="https://www.google.com/maps/search/?api=1&query=Ein+Bokek+Beach" target="_blank" class="px-3.5 py-1.5 bg-slate-200 text-slate-700 text-xs font-extrabold rounded-xl hover:bg-slate-300 flex items-center gap-1 transition-colors">
                             <i class="fa-solid fa-map-location-dot"></i> Maps
                         </a>
                     </div>
@@ -871,7 +800,6 @@
 
     </div>
 
-    <!-- JAVASCRIPT APP LOGIC -->
     <script>
         // Default Config State (Saves to LocalStorage)
         let config = {
@@ -1007,12 +935,12 @@
         function applyLanguage() {
             // Update Lang Buttons Style
             if (config.lang === 'fr') {
-                document.getElementById('lang-btn-fr').className = "px-4 py-1.5 rounded-full text-xs font-bold uppercase transition-all duration-300 flex items-center gap-1.5 bg-white text-deepblue-600 shadow border border-slate-200";
+                document.getElementById('lang-btn-fr').className = "px-4 py-1.5 rounded-full text-xs font-bold uppercase transition-all duration-300 flex items-center gap-1.5 bg-white text-deepblue-600 shadow" + " shadow border border-slate-200";
                 document.getElementById('lang-btn-he').className = "px-4 py-1.5 rounded-full text-xs font-bold uppercase transition-all duration-300 flex items-center gap-1.5 text-slate-500 hover:text-slate-800";
                 document.body.removeAttribute('dir');
                 document.body.classList.remove('font-hebrew');
             } else {
-                document.getElementById('lang-btn-he').className = "px-4 py-1.5 rounded-full text-xs font-bold uppercase transition-all duration-300 flex items-center gap-1.5 bg-white text-deepblue-600 shadow border border-slate-200";
+                document.getElementById('lang-btn-he').className = "px-4 py-1.5 rounded-full text-xs font-bold uppercase transition-all duration-300 flex items-center gap-1.5 bg-white text-deepblue-600 shadow" + " shadow border border-slate-200";
                 document.getElementById('lang-btn-fr').className = "px-4 py-1.5 rounded-full text-xs font-bold uppercase transition-all duration-300 flex items-center gap-1.5 text-slate-500 hover:text-slate-800";
                 document.body.setAttribute('dir', 'rtl');
                 document.body.classList.add('font-hebrew');
@@ -1175,8 +1103,6 @@
                     : 'bg-slate-50 border-slate-100 text-slate-700 hover:border-slate-200'
                 }`;
 
-                // Dynamic direction structure
-                const isRtl = config.lang === 'he';
                 wrapper.innerHTML = `
                     <label class="flex items-center gap-3 w-full cursor-pointer select-none">
                         <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleChecklistItem('${item.id}')" class="w-5 h-5 rounded-md border-slate-300 text-desert-500 focus:ring-desert-400 cursor-pointer">
