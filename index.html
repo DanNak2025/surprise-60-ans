@@ -1,773 +1,1167 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Surprise 60 ans - Camp Sahara Mer Morte</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2 family=Assistant:wght@300;400;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        desert: {
-                            50: '#fdfbf7',
-                            100: '#fbf7ee',
-                            200: '#f4eade',
-                            300: '#e9d5c1',
-                            400: '#d7b69a',
-                            500: '#e07a5f', // Desert Orange
-                            600: '#c85e42',
-                            700: '#a3472f',
-                        },
-                        deepblue: {
-                            50: '#f0f4f8',
-                            100: '#dbe5f0',
-                            200: '#bccfe3',
-                            500: '#3d5a80', // Deep sea blue
-                            600: '#2e4769',
-                            700: '#21344f',
-                            800: '#1d2a3a',
-                        },
-                        seablue: {
-                            200: '#cee3f0',
-                            300: '#98c1d9', // Light sea blue
-                            400: '#6ea6cc',
-                        },
-                        emeraldaccent: {
-                            500: '#2a9d8f', // Accent sage/teal
-                            600: '#218276',
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'Assistant', 'sans-serif'],
-                        hebrew: ['Assistant', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
-    
-    <style>
-        body {
-            font-family: 'Inter', 'Assistant', sans-serif;
-            background-color: #fcf9f4;
-            background-image: radial-gradient(#e07a5f08 1px, transparent 0), radial-gradient(#3d5a8005 1px, transparent 0);
-            background-size: 24px 24px;
-            background-position: 0 0, 12px 12px;
-        }
-        
-        .glass-card {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-        }
+import React, { useState, useEffect } from 'react';
 
-        .gradient-bg {
-            background: linear-gradient(135deg, #3d5a80 0%, #2e4769 50%, #e07a5f 100%);
-        }
+const TRANSLATIONS = {
+  FR: {
+    title: "🎂 Surprise 60 ans de Papa !",
+    subtitle: "👨‍👩‍👧‍👦 Glamping & Aventure Sauvage au Camp Sahara (Mer Morte)",
+    meta_desc: "Évènement Exceptionnel - Camp Sahara Desert Adventure",
+    countdown_title: "Compte à rebours avant la surprise",
+    days: "Jours",
+    hours: "Heures",
+    minutes: "Minutes",
+    seconds: "Secondes",
+    change_date: "Changer la date de la surprise",
+    save: "Enregistrer",
+    reset: "Réinitialiser",
+    dream_team: "La Dream Team au complet, prête pour l'aventure ! 👨‍👩‍👧‍👦❤️",
+    blessing_title: "✨ Bénédiction de la Famille Nakache ✨",
+    blessing_text: "À notre cher Papa, notre pilier, notre repère et notre source d'inspiration. Aujourd'hui, pour tes 60 ans, nous sommes tous réunis sous le ciel magique du désert pour te célébrer avec tout notre amour. Merci pour ta force tranquille, ta générosité infinie, tes conseils précieux et ton rire chaleureux qui illumine nos vies au quotidien. Que cette nouvelle décennie t'apporte une santé de fer, une joie débordante, une sérénité profonde et encore mille et un voyages et moments inoubliables partagés tous ensemble. Tu es notre roi aujourd'hui et pour toujours !",
+    blessing_signature: "Nous t'aimons plus que tout au monde — La Famille Nakache TOUS ❤️",
+    day1: "Jour 1",
+    day2: "Jour 2",
+    day1_subtitle: "Le Grand Départ & La Surprise !",
+    day2_subtitle: "Désert Oasis & Randonnée Aquatique",
+    packing_title: "🎒 Checklist des Bagages",
+    packing_subtitle: "Cochez les affaires au fur et à mesure pour ne rien oublier",
+    all: "Tout",
+    cat_baby: "Bébé & Enfants 👶",
+    cat_swim: "Baignade & Soleil 🏖️",
+    cat_hike: "Hike & Désert 🌵",
+    cat_surprise: "Logistique Surprise 🎉",
+    add_item: "Ajouter un article...",
+    btn_add: "Ajouter",
+    reset_list: "Réinitialiser la liste",
+    who_brings_what: "🍢 Qui apporte quoi ? (Barbecue & Fête)",
+    who_subtitle: "Répartition des tâches familiales et courses",
+    add_task: "Ajouter un élément...",
+    assignee_placeholder: "Qui ?",
+    directions_title: "📍 Adresses & Navigation Rapide",
+    directions_subtitle: "Cliquez sur les liens pour lancer votre GPS",
+    waze_link: "Lancer Waze",
+    gmaps_link: "Google Maps",
+    tip: "💡 Conseil :",
+    view_details: "Détails de l'étape",
+    completed: "complété",
+    items_left: "restants",
+    no_items: "Aucun article dans cette catégorie.",
+    no_tasks: "Toutes les tâches sont terminées ou aucune n'a été ajoutée !",
+    team_progress: "Progression de la Dream Team",
+    timeline_steps: [
+      {
+        time: "09:15",
+        tag: "Départ",
+        title: "🚗 Départ de Raanana",
+        desc: "On charge les voitures et on décolle en premier pour devancer Papa et tout préparer sur place au Camp Sahara ! Gardez un sac à part avec maillots et crème solaire.",
+        day: 1
+      },
+      {
+        time: "10:45 - 12:00",
+        tag: "Pause & Repas",
+        title: "🏃‍♂️ Parc de la Voie Ferrée & Déjeuner",
+        desc: "Arrêt à 'The First Station' à Jérusalem. Le petit de 3 ans se défoule sur l'ancienne voie ferrée et les wagons en bois pendant que bébé reste au frais.",
+        day: 1
+      },
+      {
+        time: "12:00 - 13:15",
+        tag: "Repos",
+        title: "😴 Sieste en voiture",
+        desc: "Pendant la descente vers la mer Morte, les enfants s'endorment à coup sûr. Route tranquille pour les parents à travers de superbes panoramas désertiques.",
+        day: 1
+      },
+      {
+        time: "13:15",
+        tag: "Installation",
+        title: "⛺ Arrivée au Camp Sahara & Préparation",
+        desc: "On arrive 1h30 avant Papa ! Check-in, installation des ballons de fête et de la banderole 'Joyeux 60 ans'. Tout le monde enfile son maillot.",
+        day: 1
+      },
+      {
+        time: "15:00",
+        tag: "SURPRISE !",
+        title: "👑 LE GRAND MOMENT : SURPRISE !",
+        desc: "Papa arrive en pensant être en tête-à-tête... et toute la famille est là ! Émotions, larmes de joie, embrassades puis plongeon collectif dans la piscine ! 🥳💦",
+        day: 1,
+        highlight: true
+      },
+      {
+        time: "17:30",
+        tag: "Crépuscule",
+        title: "🌅 Coucher de soleil à la Mer Morte",
+        desc: "Petite séance photo magique en famille face aux montagnes de Moav. Les enfants jouent dans le sable doré.",
+        day: 1
+      },
+      {
+        time: "19:30+",
+        tag: "Soirée",
+        title: "🔥 Barbecue & Feu de camp",
+        desc: "Dîner de fête au glamping, grillades au feu de bois, guimauves rôties et musique sous une voûte céleste incroyable.",
+        day: 1
+      },
+      {
+        time: "08:00",
+        tag: "Réveil",
+        title: "☕ Matin doux au désert",
+        desc: "Petit-déjeuner tranquille sur le campement avec un bon café chaud face à l'immensité du désert et la brise matinale.",
+        day: 2
+      },
+      {
+        time: "09:15 - 11:30",
+        tag: "Randonnée",
+        title: "💦 Randonnée aquatique à Ein Gedi",
+        desc: "Balade facile et ombragée à Nahal David jusqu'à la première cascade. Les enfants s'amusent dans l'eau fraîche et on croise souvent des bouquetins sauvages !",
+        day: 2
+      },
+      {
+        time: "11:30",
+        tag: "Piscine",
+        title: "🏊‍♂️ Piscine du Camp Sahara",
+        desc: "De retour de la randonnée, on plonge directement dans l'eau cristalline de la piscine pour se détendre avant les grosses chaleurs de midi.",
+        day: 2
+      },
+      {
+        time: "13:00 - 15:30",
+        tag: "Repos",
+        title: "🍔 Déjeuner & Sieste au frais",
+        desc: "Déjeuner léger et sieste méritée pour tout le monde dans le confort des tentes de glamping parfaitement climatisées.",
+        day: 2
+      },
+      {
+        time: "15:30",
+        tag: "Fun",
+        title: "⛲ Fountain Walk & Check-out",
+        desc: "Promenade sur l'esplanade d'Ein Bokek. Le grand s'amuse dans les jets d'eau gratuits et on s'offre une délicieuse glace rafraîchissante !",
+        day: 2
+      },
+      {
+        time: "18:00+",
+        tag: "Fin",
+        title: "😴 Retour paisible vers Raanana",
+        desc: "Les enfants dorment profondément pendant le trajet du retour. On rentre la tête pleine de souvenirs magiques et de moments inoubliables.",
+        day: 2
+      }
+    ]
+  },
+  EN: {
+    title: "🎂 Dad's 60th Surprise Birthday !",
+    subtitle: "👨‍👩‍👧‍👦 Glamping & Wild Adventure at Camp Sahara (Dead Sea)",
+    meta_desc: "Special Event - Camp Sahara Desert Adventure",
+    countdown_title: "Countdown to the big surprise",
+    days: "Days",
+    hours: "Hours",
+    minutes: "Minutes",
+    seconds: "Seconds",
+    change_date: "Change Surprise Date & Time",
+    save: "Save",
+    reset: "Reset",
+    dream_team: "The Dream Team is all set and ready for the adventure! 👨‍👩‍👧‍👦❤️",
+    blessing_title: "✨ Blessing from the Nakache Family ✨",
+    blessing_text: "To our dearest Dad, our pillar, our rock, and our endless source of inspiration. Today, for your 60th birthday, we are all gathered under this magical desert sky to celebrate you with all our love. Thank you for your quiet strength, your boundless generosity, your wise guidance, and your warm laughter that brightens our days. May this next decade bring you outstanding health, endless joy, profound peace of mind, and a thousand more shared travels and unforgettable memories. You are our king, today and always!",
+    blessing_signature: "We love you more than words can say — The Nakache Family ALL ❤️",
+    day1: "Day 1",
+    day2: "Day 2",
+    day1_subtitle: "The Big Departure & The Surprise!",
+    day2_subtitle: "Desert Oasis & Water Hike",
+    packing_title: "🎒 Interactive Packing Checklist",
+    packing_subtitle: "Tick items off as you pack so nothing gets left behind",
+    all: "All",
+    cat_baby: "Baby & Kids 👶",
+    cat_swim: "Swim & Sun 🏖️",
+    cat_hike: "Hike & Desert 🌵",
+    cat_surprise: "Surprise Logistics 🎉",
+    add_item: "Add a custom item...",
+    btn_add: "Add",
+    reset_list: "Reset List",
+    who_brings_what: "🍢 Who is bringing what? (BBQ & Party)",
+    who_subtitle: "Family task allocations and groceries setup",
+    add_task: "Add task item...",
+    assignee_placeholder: "Who?",
+    directions_title: "📍 Addresses & Fast Navigation",
+    directions_subtitle: "Click links to easily launch your GPS",
+    waze_link: "Launch Waze",
+    gmaps_link: "Google Maps",
+    tip: "💡 Tip:",
+    view_details: "Stage Details",
+    completed: "completed",
+    items_left: "left",
+    no_items: "No items in this category yet.",
+    no_tasks: "All clear! Or no tasks added yet.",
+    team_progress: "Dream Team Progress",
+    timeline_steps: [
+      {
+        time: "09:15",
+        tag: "Departure",
+        title: "🚗 Leaving Raanana",
+        desc: "We pack the cars and take off first to beat Dad to Camp Sahara and set up everything nicely! Keep a separate bag with swimsuits and sun cream handy.",
+        day: 1
+      },
+      {
+        time: "10:45 - 12:00",
+        tag: "Break & Lunch",
+        title: "🏃‍♂️ Old Railway Park & Lunch",
+        desc: "A pleasant stop at 'The First Station' in Jerusalem. The 3-year-old gets to burn off steam on the old train tracks and wooden cars while baby rests in the shade.",
+        day: 1
+      },
+      {
+        time: "12:00 - 13:15",
+        tag: "Rest",
+        title: "😴 Car Nap Time",
+        desc: "Descending towards the Dead Sea, the kids will fall fast asleep. Parents get a beautiful, peaceful drive with grand desert panoramas.",
+        day: 1
+      },
+      {
+        time: "13:15",
+        tag: "Setup",
+        title: "⛺ Arriving at Camp Sahara",
+        desc: "Arriving 1.5 hours ahead of Dad! Quick check-in, blowing up party balloons and setting up the 'Happy 60th' surprise banners. Everyone changes to swimwear.",
+        day: 1
+      },
+      {
+        time: "15:00",
+        tag: "SURPRISE !",
+        title: "👑 THE BIG MOMENT: SURPRISE!",
+        desc: "Dad arrives thinking it is just a quiet couple getaway... and our entire loving family jumps out! Big hugs, emotional tears, and then we all dive into the pool! 🥳💦",
+        day: 1,
+        highlight: true
+      },
+      {
+        time: "17:30",
+        tag: "Sunset",
+        title: "🌅 Dead Sea Sunset Photos",
+        desc: "Capture breathtaking family pictures facing the vibrant pink Moav Mountains. The children enjoy playing in the golden sand.",
+        day: 1
+      },
+      {
+        time: "19:30+",
+        tag: "Evening",
+        title: "🔥 BBQ Feast & Campfire",
+        desc: "Fireside dinner at our glamping site. Grilling tasty meats, roasting marshmallows, and sharing stories under a blanket of desert stars.",
+        day: 1
+      },
+      {
+        time: "08:00",
+        tag: "Morning",
+        title: "☕ Peaceful Desert Morning",
+        desc: "A peaceful morning wake up with fresh hot coffee facing the vast dunes and desert horizons.",
+        day: 2
+      },
+      {
+        time: "09:15 - 11:30",
+        tag: "Hike",
+        title: "💦 Water Hike at Ein Gedi",
+        desc: "Easy, shady stroll along Nahal David up to the famous waterfalls. Great splash time for kids and high chances of meeting wild Ibexes!",
+        day: 2
+      },
+      {
+        time: "11:30",
+        tag: "Pool",
+        title: "🏊‍♂️ Camp Sahara Pool Round 2",
+        desc: "Coming back from the beautiful hike, we immediately jump into the camp's pool to cool down before noon heat hits.",
+        day: 2
+      },
+      {
+        time: "13:00 - 15:30",
+        tag: "Nap",
+        title: "🍔 Lunch & Cool Nap",
+        desc: "Light tasty lunch and a well-deserved nap inside our fully air-conditioned, luxury glamping tents.",
+        day: 2
+      },
+      {
+        time: "15:30",
+        tag: "Fun",
+        title: "⛲ Fountain Splash & Check-out",
+        desc: "We check out and drive to the scenic Ein Bokek beachfront promenade. Kids play in the cold fountain water-jets, followed by ice cream!",
+        day: 2
+      },
+      {
+        time: "18:00+",
+        tag: "End",
+        title: "😴 Quiet Road Back to Raanana",
+        desc: "The kids fall fast asleep. A quiet drive home with incredible family bonding memories to cherish forever.",
+        day: 2
+      }
+    ]
+  },
+  HE: {
+    title: "🎂 הפתעה לגיל 60 של אבא!",
+    subtitle: "👨‍👩‍👧‍👦 יומיים של חגיגה משפחתית וגלמפינג בקמפ סהרה (ים המלח)",
+    meta_desc: "אירוע מיוחד - הרפתקה במדבר קמפ סהרה",
+    countdown_title: "ספירה לאחור להפתעה הגדולה",
+    days: "ימים",
+    hours: "שעות",
+    minutes: "דקות",
+    seconds: "שניות",
+    change_date: "שינוי תאריך ההפתעה",
+    save: "שמור",
+    reset: "אתחל",
+    dream_team: "הצוות המשפחתי המדהים מוכן ומזומן לחגיגה הגדולה! 👨‍👩‍👧‍👦❤️",
+    blessing_title: "✨ ברכה חמה ומרגשת מאת משפחת נקש ✨",
+    blessing_text: "לאבא היקר, האהוב והנערץ שלנו, העמוד התומך, העוגן ומקור ההשראה של כולנו. היום, לרגל יום הולדתך ה-60, התכנסנו יחד תחת שמי המדבר הקסומים כדי לחגוג אותך באהבה ענקית. תודה על הכוח השקט שלך, על הנדיבות האינסופית, על העצות המדויקות ועל החיוך שמחמם את ליבנו בכל יום מחדש. אנו מאחלים לך עשור חדש מלא בבריאות איתנה, שמחת חיים, שלווה פנימית ועוד המון טיולים, חוויות ורגעים בלתי נשכחים יחד עם כולנו. בשבילנו אתה תמיד המלך!",
+    blessing_signature: "אוהבים אותך הכי בעולם ובלי גבולות — משפחת נקש כולם ❤️",
+    day1: "יום 1",
+    day2: "יום 2",
+    day1_subtitle: "הנסיעה הגדולה וההפתעה!",
+    day2_subtitle: "נאות מדבר ומסלול מים זורמים",
+    packing_title: "🎒 רשימת ציוד אינטראקטיבית",
+    packing_subtitle: "סמנו וי על הדברים שארזתם כדי להגיע מוכנים ב-100%",
+    all: "הכל",
+    cat_baby: "תינוק וילדים 👶",
+    cat_swim: "בריכה ושמש 🏖️",
+    cat_hike: "מדבר ומסלולים 🌵",
+    cat_surprise: "לוגיסטיקה והפתעה 🎉",
+    add_item: "הוסף פריט חדש...",
+    btn_add: "הוסף",
+    reset_list: "איפוס הרשימה",
+    who_brings_what: "🍢 מי מביא מה? (על האש והאירוע)",
+    who_subtitle: "חלוקת משימות, קניות וארגון משפחתי",
+    add_task: "הוסף משימה/פריט...",
+    assignee_placeholder: "מי?",
+    directions_title: "📍 כתובות וניווט מהיר",
+    directions_subtitle: "לחיצה קלה וה-GPS שלכם מוכן לדרך",
+    waze_link: "ניווט ב-Waze",
+    gmaps_link: "Google Maps",
+    tip: "💡 טיפ חשוב:",
+    view_details: "פרטי השלב",
+    completed: "הושלמו",
+    items_left: "נותרו",
+    no_items: "אין פריטים בקטגוריה זו עדיין.",
+    no_tasks: "הכל מוכן! או שלא נוספו משימות עדיין.",
+    team_progress: "התקדמות ההכנות של המשפחה",
+    timeline_steps: [
+      {
+        time: "09:15",
+        tag: "יוצאים לדרך",
+        title: "🚗 יוצאים מרעננה",
+        desc: "אורזים את המכוניות ויוצאים לדרך ראשונים כדי להקדים את אבא, להתארגן ולחכות לו בקמפ סהרה! שימו תיק נפרד עם בגדי ים וקרם הגנה בשלוף.",
+        day: 1
+      },
+      {
+        time: "10:45 - 12:00",
+        tag: "עצירה ואוכל",
+        title: "🏃‍♂️ פארק המסילה וארוחת צהריים",
+        desc: "עוצרים במתחם 'התחנה הראשונה' בירושלים. בן ה-3 יוציא אנרגיות על פסי הרכבת וקרונות העץ הישנים, בזמן שהתינוק נח בצל הנעים. אוכלים משהו קל במזגן.",
+        day: 1
+      },
+      {
+        time: "12:00 - 13:15",
+        tag: "מנוחה",
+        title: "😴 שנת צהריים באוטו",
+        desc: "בזמן הירידות היפות לים המלח, הילדים ירדמו בקלות בנסיעה. ההורים נהנים מנסיעה שקטה מול נופים מדבריים מהפנטים.",
+        day: 1
+      },
+      {
+        time: "13:15",
+        tag: "התארגנות",
+        title: "⛺ הגעה מוקדמת לקמפ סהרה",
+        desc: "מגיעים שעה וחצי לפני אבא! עושים צ'ק-אין מהיר, מנפחים בלונים ותולים את השלט 'מזל טוב לגיל 60'. כולם כבר מחליפים לבגדי ים.",
+        day: 1
+      },
+      {
+        time: "15:00",
+        tag: "הההפתעה!",
+        title: "👑 הרגע הגדול: הפתעה!",
+        desc: "אבא מגיע לחופשה זוגית רגועה... ופתאום - כל השבט מחכה לו שם! חיבוקים חמים, דמעות של התרגשות, ומיד קופצים כולם יחד לבריכה המרעננת! 🥳💦",
+        day: 1,
+        highlight: true
+      },
+      {
+        time: "17:30",
+        tag: "שקיעה",
+        title: "🌅 סיבוב שקיעה בים המלח",
+        desc: "סשן צילומי משפחה קסום מול הרי מואב המוארים בצבעי ארגמן. הילדים נהנים לשחק בחול הרך.",
+        day: 1
+      },
+      {
+        time: "19:30+",
+        tag: "ערב במדבר",
+        title: "🔥 על האש ומדורה משפחתית",
+        desc: "ארוחת ערב חגיגית ומפנקת במתחם הגלמפינג, צליית מרשמלו על האש, שירה ושיחות כיפיות מתחת לשמיים מלאי כוכבים.",
+        day: 1
+      },
+      {
+        time: "08:00",
+        tag: "בוקר טוב",
+        title: "☕ בוקר רגוע במדבר",
+        desc: "מתעוררים בנחת לקול השקט של המדבר. שותים קפה חם ואיכותי מול הנוף הפתוח של הרי יהודה.",
+        day: 2
+      },
+      {
+        time: "09:15 - 11:30",
+        tag: "טיול מים",
+        title: "💦 טיול מים בעין גדי",
+        desc: "הליכה מוצלת, קלילה וכיפית בנחל דוד עד למפל הראשון. הילדים משתוכשכים במים הקרירים, ויש סיכוי מצוין לפגוש יעלים ידידותיים בדרך!",
+        day: 2
+      },
+      {
+        time: "11:30",
+        tag: "בריכה",
+        title: "🏊‍♂️ סבב בריכה שני בקמפ סהרה",
+        desc: "חוזרים מהטיול המקסים וישר קופצים חזרה למים הקרירים של בריכת הקמפ להירגע.",
+        day: 2
+      },
+      {
+        time: "13:00 - 15:30",
+        tag: "מנוחה",
+        title: "🍔 ארוחת צהריים ושנ\"צ ממוזג",
+        desc: "אוכלים ארוחת צהריים קלה ונכנסים לאוהלי הגלמפינג המפוארים והממוזגים לשנת צהריים מפנקת.",
+        day: 2
+      },
+      {
+        time: "15:30",
+        tag: "כיף ומזרקות",
+        title: "⛲ Fountain Splash & Check-out",
+        desc: "עושים צ'ק-אאוט ונוסעים לטיילת החוף היפה של עין בוקק. הילדים נהנים ומשתוללים במזרקות המים החינמיות, ומקנחים בגלידה טעימה וקרה!",
+        day: 2
+      },
+      {
+        time: "18:00+",
+        tag: "חוזרים הביתה",
+        title: "😴 נסיעה חלקה חזרה לרעננה",
+        desc: "הילדים נרדמים עמוק ברכב לכל אורך הדרך. נסיעה שקטה ורגועה להורים עם לב מלא בזיכרונות משפחתיים מדהימים ומרגשים.",
+        day: 2
+      }
+    ]
+  }
+};
 
-        .surprise-glow {
-            @keyframes pulseGlow {
-                0%, 100% { box-shadow: 0 0 15px rgba(42, 157, 143, 0.4); }
-                50% { box-shadow: 0 0 30px rgba(42, 157, 143, 0.8); }
-            }
-            animation: pulseGlow 3s infinite;
-        }
-    </style>
-</head>
-<body class="text-slate-800 min-h-screen pb-16 antialiased">
+const DEFAULT_CHECKLIST = [
+  { id: 1, text: "Maillots de bain / Swimwear / בגדי ים", category: "swim", checked: false },
+  { id: 2, text: "Serviettes de plage / Towels / מגבות", category: "swim", checked: false },
+  { id: 3, text: "Crème solaire & Chapeaux / Sunscreen & Hats / קרם הגנה וכובעים", category: "swim", checked: false },
+  { id: 4, text: "Lunettes de soleil / Sunglasses / משקפי שמש", category: "swim", checked: false },
+  { id: 5, text: "Couches bébé & lingettes / Diapers & Wipes / חיתולים ומגבונים לתינוק", category: "baby", checked: false },
+  { id: 6, text: "Poussette compacte / Compact Stroller / טיולון קומפקטי", category: "baby", checked: false },
+  { id: 7, text: "Biberons & Lait / Baby bottles & Milk / בקבוקים ופורמולה לתינוק", category: "baby", checked: false },
+  { id: 8, text: "Jouets de sable / Beach toys / משחקי חול לילד", category: "baby", checked: false },
+  { id: 9, text: "Chaussures d'eau / Water shoes / נעלי מים למסלול עין גדי", category: "hike", checked: false },
+  { id: 10, text: "Sac à dos de rando / Hiking backpack / תיק גב קטן לטיול", category: "hike", checked: false },
+  { id: 11, text: "Gourdes d'eau fraîches / Water bottles / בקבוקי מים תרמיים", category: "hike", checked: false },
+  { id: 12, text: "Banderole & Ballons 60 ans / Banner & Balloons / שלט יום הולדת ובלונים", category: "surprise", checked: false },
+  { id: 13, text: "Bougies & Gâteau d'anniversaire / Birthday cake & Candles / עוגה ונרות", category: "surprise", checked: false },
+  { id: 14, text: "Cadeaux pour Papa / Gifts for Dad / מתנות לאבא", category: "surprise", checked: false },
+  { id: 15, text: "Guimauves & Pics / Marshmallows & Sticks / מרשמלו ושיפודים למדורה", category: "surprise", checked: false },
+];
 
-    <div class="sticky top-0 z-50 glass-card px-4 py-3 shadow-md flex justify-between items-center transition-all duration-300">
-        <div class="flex items-center space-x-2">
-            <span class="text-xl">🏜️</span>
-            <span class="font-extrabold text-sm tracking-wider uppercase text-deepblue-700 hidden sm:inline-block">Camp Sahara Desert Adventure</span>
+const DEFAULT_TASKS = [
+  { id: 1, item: "Viandes pour le Barbecue (Poulet, Brochettes, Merguez) / BBQ Meats", name: "Ron & Sarah", completed: false },
+  { id: 2, item: "Salades fraîches, Houmous, Pitas / Fresh Salads, Hummus & Pitas", name: "Mom", completed: true },
+  { id: 3, item: "Boissons fraîches, Bières & Glace / Cold Drinks, Beers & Ice", name: "Dan", completed: false },
+  { id: 4, item: "Enceinte Musique Bluetooth & Guitare / Bluetooth Speaker & Guitar", name: "Chloe & Ron", completed: false },
+  { id: 5, item: "Charbon, Allume-feu & Grill / Charcoal & Firestarters", name: "Dan & Chloe", completed: false },
+  { id: 6, item: "Gâteau surprise & Assiettes carton / Surprise Cake & Paper plates", name: "Mom & Sarah", completed: false }
+];
+
+export default function App() {
+  const [lang, setLang] = useState('FR');
+  const [currentDayTab, setCurrentDayTab] = useState(1);
+  const [checklist, setChecklist] = useState(DEFAULT_CHECKLIST);
+  const [tasks, setTasks] = useState(DEFAULT_TASKS);
+  
+  // Custom checklist input
+  const [newChecklistItem, setNewChecklistItem] = useState('');
+  const [newChecklistCategory, setNewChecklistCategory] = useState('swim');
+  const [checklistFilter, setChecklistFilter] = useState('all');
+
+  // Custom task allocation input
+  const [newTaskItem, setNewTaskItem] = useState('');
+  const [newTaskName, setNewTaskName] = useState('');
+
+  // Target Date for the Surprise (Set for tomorrow: June 14, 2026, at 15:00)
+  const [targetDateStr, setTargetDateStr] = useState("2026-06-14T15:00:00");
+  const [isEditingDate, setIsEditingDate] = useState(false);
+  const [tempDateStr, setTempDateStr] = useState(targetDateStr);
+
+  // Time remaining state
+  const [timeLeft, setTimeLeft] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+    ended: false
+  });
+
+  useEffect(() => {
+    const calculateTime = () => {
+      const difference = +new Date(targetDateStr) - +new Date();
+      if (difference <= 0) {
+        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0, ended: true });
+        return;
+      }
+
+      setTimeLeft({
+        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+        minutes: Math.floor((difference / 1000 / 60) % 60),
+        seconds: Math.floor((difference / 1000) % 60),
+        ended: false
+      });
+    };
+
+    calculateTime();
+    const interval = setInterval(calculateTime, 1000);
+    return () => clearInterval(interval);
+  }, [targetDateStr]);
+
+  const toggleChecklist = (id) => {
+    setChecklist(prev => prev.map(item => item.id === id ? { ...item, checked: !item.checked } : item));
+  };
+
+  const addChecklistItem = (e) => {
+    e.preventDefault();
+    if (!newChecklistItem.trim()) return;
+    const newItem = {
+      id: Date.now(),
+      text: newChecklistItem,
+      category: newChecklistCategory,
+      checked: false
+    };
+    setChecklist(prev => [...prev, newItem]);
+    setNewChecklistItem('');
+  };
+
+  const deleteChecklistItem = (id) => {
+    setChecklist(prev => prev.filter(item => item.id !== id));
+  };
+
+  const resetChecklist = () => {
+    setChecklist(DEFAULT_CHECKLIST);
+  };
+
+  const toggleTask = (id) => {
+    setTasks(prev => prev.map(t => t.id === id ? { ...t, completed: !t.completed } : t));
+  };
+
+  const addTask = (e) => {
+    e.preventDefault();
+    if (!newTaskItem.trim() || !newTaskName.trim()) return;
+    const nTask = {
+      id: Date.now(),
+      item: newTaskItem,
+      name: newTaskName,
+      completed: false
+    };
+    setTasks(prev => [...prev, nTask]);
+    setNewTaskItem('');
+    setNewTaskName('');
+  };
+
+  const deleteTask = (id) => {
+    setTasks(prev => prev.filter(t => t.id !== id));
+  };
+
+  const resetTasks = () => {
+    setTasks(DEFAULT_TASKS);
+  };
+
+  const isRTL = lang === 'HE';
+
+  // Filtered Checklist
+  const filteredChecklist = checklist.filter(item => {
+    if (checklistFilter === 'all') return true;
+    return item.category === checklistFilter;
+  });
+
+  // Calculate statistics
+  const packedCount = checklist.filter(i => i.checked).length;
+  const unpackedCount = checklist.length - packedCount;
+  const taskCompletedCount = tasks.filter(t => t.completed).length;
+  const taskTotalCount = tasks.length;
+
+  return (
+    <div className={`min-h-screen bg-[#FDFBF7] text-slate-800 font-sans ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'}>
+      
+      {/* Dynamic Header Toolbar with Language Selector */}
+      <header className="sticky top-0 z-40 bg-[#FDFBF7]/95 backdrop-blur-md border-b border-orange-100 shadow-sm transition-all">
+        <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="text-2xl">🏜️</span>
+            <span className="font-extrabold tracking-wider bg-gradient-to-r from-orange-600 to-amber-700 bg-clip-text text-transparent text-lg md:text-xl">
+              CAMP SAHARA 60
+            </span>
+          </div>
+
+          {/* Languages tabs */}
+          <div className="flex bg-orange-50 p-1 rounded-full border border-orange-100">
+            {['FR', 'EN', 'HE'].map((l) => (
+              <button
+                key={l}
+                onClick={() => setLang(l)}
+                className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all ${
+                  lang === l
+                    ? 'bg-gradient-to-r from-orange-500 to-amber-600 text-white shadow-sm scale-105'
+                    : 'text-amber-800 hover:text-orange-600'
+                }`}
+              >
+                {l === 'FR' ? '🇫🇷 FR' : l === 'EN' ? '🇬🇧 EN' : '🇮🇱 HE'}
+              </button>
+            ))}
+          </div>
         </div>
+      </header>
+
+      {/* Hero Desert Header Section */}
+      <div className="relative overflow-hidden bg-gradient-to-b from-[#FFF2E2] via-[#FFE2C2] to-[#FDFBF7] pt-8 pb-16 px-4">
         
-        <div class="bg-slate-100 p-1 rounded-full flex gap-1 shadow-inner border border-slate-200 text-[11px]">
-            <button id="lang-btn-fr" class="px-3 py-1.5 rounded-full font-bold uppercase transition-all duration-300 flex items-center gap-1 bg-white text-deepblue-600 shadow border border-slate-200" onclick="switchLang('fr')">
-                <span>🇫🇷</span> <span>FR</span>
-            </button>
-            <button id="lang-btn-en" class="px-3 py-1.5 rounded-full font-bold uppercase transition-all duration-300 flex items-center gap-1 text-slate-500 hover:text-slate-800" onclick="switchLang('en')">
-                <span>🇬🇧</span> <span>EN</span>
-            </button>
-            <button id="lang-btn-he" class="px-3 py-1.5 rounded-full font-bold uppercase transition-all duration-300 flex items-center gap-1 text-slate-500 hover:text-slate-800" onclick="switchLang('he')">
-                <span>🇮🇱</span> <span>HE</span>
-            </button>
-        </div>
-    </div>
-
-    <header class="relative gradient-bg text-white overflow-hidden py-12 md:py-20 px-4 text-center">
-        <div class="absolute inset-0 opacity-10 pointer-events-none">
-            <svg class="absolute bottom-0 w-full" viewBox="0 0 1440 320" fill="currentColor">
-                <path d="M0,96L80,122.7C160,149,320,203,480,218.7C640,235,800,213,960,181.3C1120,149,1280,107,1360,85.3L1440,64L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"></path>
-            </svg>
-        </div>
+        {/* Abstract decorative desert shapes/sun */}
+        <div className="absolute top-10 right-1/4 w-72 h-72 bg-orange-300/30 rounded-full blur-3xl -z-10" />
+        <div className="absolute top-20 left-10 w-48 h-48 bg-amber-400/20 rounded-full blur-2xl -z-10" />
         
-        <div class="absolute top-10 left-10 text-3xl animate-bounce duration-1000 opacity-30">🎈</div>
-        <div class="absolute top-20 right-12 text-4xl animate-bounce duration-700 opacity-40">⛺</div>
-        <div class="absolute bottom-8 left-1/4 text-2xl opacity-25">🏖️</div>
+        <div className="max-w-4xl mx-auto text-center relative z-10">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-500/10 text-orange-700 font-semibold text-sm mb-4 animate-pulse">
+            <span>✨</span> {TRANSLATIONS[lang].meta_desc} <span>✨</span>
+          </div>
 
-        <div class="max-w-4xl mx-auto relative z-10">
-            <div id="header-fr" class="lang-content space-y-3">
-                <span class="bg-desert-500 text-white text-xs font-extrabold px-3 py-1.5 rounded-full uppercase tracking-widest shadow-md">Évènement Exceptionnel</span>
-                <h1 class="text-3xl md:text-5xl font-black tracking-tight leading-tight">🎂 Surprise 60 ans de Papa !</h1>
-                <p class="text-base md:text-xl text-seablue-200 font-medium max-w-xl mx-auto">👨‍👩‍👧‍👦 Glamping & Aventure Sauvage au Camp Sahara (Mer Morte)</p>
-            </div>
+          <h1 className="text-3xl md:text-5xl lg:text-6xl font-black text-amber-950 tracking-tight leading-tight mb-4 drop-shadow-sm">
+            {TRANSLATIONS[lang].title}
+          </h1>
+          
+          <p className="text-base md:text-xl text-amber-900/80 max-w-2xl mx-auto font-medium mb-8">
+            {TRANSLATIONS[lang].subtitle}
+          </p>
 
-            <div id="header-en" class="lang-content space-y-3 hidden">
-                <span class="bg-desert-500 text-white text-xs font-extrabold px-3 py-1.5 rounded-full uppercase tracking-widest shadow-md">Special Event</span>
-                <h1 class="text-3xl md:text-5xl font-black tracking-tight leading-tight">🎂 Dad's 60th Surprise Birthday !</h1>
-                <p class="text-base md:text-xl text-seablue-200 font-medium max-w-xl mx-auto">👨‍👩‍👧‍👦 Glamping & Wild Adventure at Camp Sahara (Dead Sea)</p>
-            </div>
+          <div className="flex justify-center gap-4 mb-4">
+            <span className="text-3xl md:text-4xl animate-bounce">🎈</span>
+            <span className="text-3xl md:text-4xl delay-100 animate-bounce">⛺</span>
+            <span className="text-3xl md:text-4xl delay-200 animate-bounce">🏖️</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Section */}
+      <main className="max-w-6xl mx-auto px-4 -mt-10 pb-20 grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        {/* Left Column: Countdown, Blessing, Illustration & Timeline */}
+        <div className="lg:col-span-8 space-y-8">
+          
+          {/* COUNTDOWN CARD */}
+          <div className="bg-white rounded-3xl p-6 md:p-8 shadow-xl border border-orange-100 relative overflow-hidden">
+            <div className="absolute top-0 right-0 left-0 h-1.5 bg-gradient-to-r from-orange-400 via-amber-500 to-yellow-400" />
             
-            <div id="header-he" class="lang-content space-y-3 hidden" dir="rtl">
-                <span class="bg-desert-500 text-white text-xs font-extrabold px-3 py-1.5 rounded-full uppercase tracking-widest shadow-md">אירוע מיוחד</span>
-                <h1 class="text-3xl md:text-5xl font-black tracking-tight leading-tight">🎂 הפתעה לגיל 60 של אבא!</h1>
-                <p class="text-base md:text-xl text-seablue-200 font-medium max-w-xl mx-auto font-hebrew">👨‍👩‍👧‍👦 יומיים של חגיגה משפחתית וגלמפינג בקמפ סהרה (ים המלח)</p>
+            <div className={`flex flex-col md:flex-row items-center justify-between gap-4 mb-6 ${isRTL ? 'md:flex-row-reverse' : ''}`}>
+              <div>
+                <h3 className="text-lg font-bold text-amber-950 flex items-center gap-2">
+                  <span>⏱️</span>
+                  {TRANSLATIONS[lang].countdown_title}
+                </h3>
+              </div>
+              <button 
+                onClick={() => {
+                  setTempDateStr(targetDateStr);
+                  setIsEditingDate(!isEditingDate);
+                }} 
+                className="text-xs font-semibold text-orange-600 hover:text-orange-700 bg-orange-50 px-3 py-1.5 rounded-lg transition-all border border-orange-100"
+              >
+                ⚙️ {TRANSLATIONS[lang].change_date}
+              </button>
             </div>
 
-            <div class="mt-8 max-w-md mx-auto glass-card text-slate-800 rounded-3xl p-5 shadow-2xl relative">
-                <button class="absolute top-3 right-3 text-xs text-slate-400 hover:text-deepblue-500 transition-colors" onclick="openDateModal()" title="Modifier la date">
-                    <i class="fa-solid fa-clock-rotate-left text-sm"></i>
-                </button>
-                
-                <p id="countdown-title-fr" class="lang-content text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">Compte à rebours avant la surprise</p>
-                <p id="countdown-title-en" class="lang-content text-xs font-bold uppercase tracking-wider text-slate-500 mb-3 hidden">Countdown to the big surprise</p>
-                <p id="countdown-title-he" class="lang-content text-xs font-bold uppercase tracking-wider text-slate-500 mb-3 hidden">ספירה לאחור להפתעה הגדולה</p>
-                
-                <div class="grid grid-cols-4 gap-2 md:gap-4 font-bold text-slate-800">
-                    <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100 shadow-sm">
-                        <span id="count-days" class="block text-xl md:text-2xl font-black text-deepblue-500">00</span>
-                        <span id="lbl-days-fr" class="lang-content text-[10px] text-slate-400 font-medium uppercase">Jours</span>
-                        <span id="lbl-days-en" class="lang-content text-[10px] text-slate-400 font-medium uppercase hidden">Days</span>
-                        <span id="lbl-days-he" class="lang-content text-[10px] text-slate-400 font-medium uppercase hidden">ימים</span>
-                    </div>
-                    <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100 shadow-sm">
-                        <span id="count-hours" class="block text-xl md:text-2xl font-black text-deepblue-500">00</span>
-                        <span id="lbl-hours-fr" class="lang-content text-[10px] text-slate-400 font-medium uppercase">Heures</span>
-                        <span id="lbl-hours-en" class="lang-content text-[10px] text-slate-400 font-medium uppercase hidden">Hours</span>
-                        <span id="lbl-hours-he" class="lang-content text-[10px] text-slate-400 font-medium uppercase hidden">שעות</span>
-                    </div>
-                    <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100 shadow-sm">
-                        <span id="count-mins" class="block text-xl md:text-2xl font-black text-deepblue-500">00</span>
-                        <span id="lbl-mins-fr" class="lang-content text-[10px] text-slate-400 font-medium uppercase">Min</span>
-                        <span id="lbl-mins-en" class="lang-content text-[10px] text-slate-400 font-medium uppercase hidden">Mins</span>
-                        <span id="lbl-mins-he" class="lang-content text-[10px] text-slate-400 font-medium uppercase hidden">דקות</span>
-                    </div>
-                    <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100 shadow-sm">
-                        <span id="count-secs" class="block text-xl md:text-2xl font-black text-desert-500 animate-pulse">00</span>
-                        <span id="lbl-secs-fr" class="lang-content text-[10px] text-slate-400 font-medium uppercase">Sec</span>
-                        <span id="lbl-secs-en" class="lang-content text-[10px] text-slate-400 font-medium uppercase hidden">Secs</span>
-                        <span id="lbl-secs-he" class="lang-content text-[10px] text-slate-400 font-medium uppercase hidden">שניות</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <div id="date-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white rounded-3xl p-6 w-full max-w-sm shadow-2xl space-y-4">
-            <div class="flex justify-between items-center border-b pb-3">
-                <h3 class="font-bold text-slate-800 text-lg">Changer la date / Change Date / שינוי תאריך</h3>
-                <button onclick="closeDateModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
-            </div>
-            <div class="space-y-3">
-                <label class="block text-sm text-slate-600 font-semibold">Date D-Day (15:00)</label>
-                <input type="datetime-local" id="input-target-date" class="w-full p-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-desert-400">
-            </div>
-            <div class="flex gap-2">
-                <button onclick="saveTargetDate()" class="flex-1 bg-desert-500 text-white font-bold py-2.5 rounded-xl hover:bg-desert-600 transition-colors">Save / שמור</button>
-                <button onclick="resetTargetDate()" class="bg-slate-100 hover:bg-slate-200 text-slate-600 px-4 py-2.5 rounded-xl font-medium transition-colors">Reset</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="container max-w-4xl mx-auto px-4 mt-8">
-
-        <div class="max-w-xl mx-auto -mt-16 md:-mt-20 mb-10 px-4 relative z-20">
-            <div class="bg-white rounded-3xl p-3 shadow-2xl border border-slate-100 overflow-hidden transform hover:scale-[1.01] transition-all duration-300">
-                <div class="relative rounded-2xl overflow-hidden aspect-[4/3] bg-gradient-to-br from-desert-100 to-deepblue-100">
-                    <img src="famille.jpg" alt="La Dream Team / המשפחה" class="w-full h-full object-cover">
-                    <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent p-4 pt-12 text-white text-center">
-                        <p id="photo-caption-fr" class="lang-content text-sm md:text-base font-bold tracking-wide">La Dream Team au complet, prête pour l'aventure ! 👨‍👩‍👧‍👦❤️</p>
-                        <p id="photo-caption-en" class="lang-content text-sm md:text-base font-bold tracking-wide hidden">The Dream Team is all set and ready for the adventure! 👨‍👩‍👧‍👦❤️</p>
-                        <p id="photo-caption-he" class="lang-content text-sm md:text-base font-bold tracking-wide hidden font-hebrew" dir="rtl">הצוות המשפחתי המדהים מוכן לחגיגה הגדולה! 👨‍👩‍👧‍👦❤️</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="grid grid-cols-2 gap-4 mb-8">
-            <button id="btn-j1" class="tab-btn active bg-desert-500 text-white font-black py-4 px-6 rounded-2xl shadow-lg transform hover:scale-[1.02] active:scale-95 transition-all flex flex-col items-center gap-1" onclick="switchTab('j1')">
-                <span id="lbl-phase1-fr" class="lang-content text-xs uppercase tracking-widest opacity-80">Phase 1</span>
-                <span id="lbl-phase1-en" class="lang-content text-xs uppercase tracking-widest opacity-80 hidden">Phase 1</span>
-                <span id="lbl-phase1-he" class="lang-content text-xs uppercase tracking-widest opacity-80 hidden">שלב 1</span>
-                <span class="text-lg flex items-center gap-2">
-                    <i class="fa-solid fa-campground"></i> 
-                    <span id="lbl-j1-fr" class="lang-content">Jour 1</span>
-                    <span id="lbl-j1-en" class="lang-content hidden">Day 1</span>
-                    <span id="lbl-j1-he" class="lang-content hidden">יום 1</span>
-                </span>
-            </button>
-            <button id="btn-j2" class="tab-btn bg-white hover:bg-slate-50 text-deepblue-500 font-black py-4 px-6 rounded-2xl shadow-md border border-slate-100 transform hover:scale-[1.02] active:scale-95 transition-all flex flex-col items-center gap-1" onclick="switchTab('j2')">
-                <span id="lbl-phase2-fr" class="lang-content text-xs uppercase tracking-widest opacity-60">Phase 2</span>
-                <span id="lbl-phase2-en" class="lang-content text-xs uppercase tracking-widest opacity-60 hidden">Phase 2</span>
-                <span id="lbl-phase2-he" class="lang-content text-xs uppercase tracking-widest opacity-60 hidden">שלב 2</span>
-                <span class="text-lg flex items-center gap-2">
-                    <i class="fa-solid fa-water"></i> 
-                    <span id="lbl-j2-fr" class="lang-content">Jour 2</span>
-                    <span id="lbl-j2-en" class="lang-content hidden">Day 2</span>
-                    <span id="lbl-j2-he" class="lang-content hidden">יום 2</span>
-                </span>
-            </button>
-        </div>
-
-        <div id="content-fr" class="lang-content space-y-6">
-            <div id="j1-fr" class="timeline space-y-4">
-                <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-l-4 border-desert-500 hover:shadow-md transition-all duration-300 relative">
-                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3"><span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5 shadow-sm"><i class="fa-solid fa-clock"></i> 09:15</span><span class="text-xs font-bold text-desert-500 flex items-center gap-1 uppercase tracking-wider"><i class="fa-solid fa-plane-departure"></i> Départ</span></div>
-                    <h3 class="event-title text-xl font-black text-deepblue-700">🚗 Départ de Raanana</h3>
-                    <p class="event-desc text-slate-600 mt-2">On charge les voitures et on décolle en premier pour devancer Papa et tout préparer sur place au Camp Sahara !</p>
-                    <div class="tip-box bg-sky-50 rounded-2xl p-4 mt-4 border-r-4 border-seablue-300 flex items-start gap-3"><span class="text-xl">💡</span><p class="text-xs md:text-sm text-slate-600"><strong>Conseil :</strong> Préparez un sac à part avec maillots, serviettes et crème solaire pour ne pas ouvrir les valises à l'arrivée.</p></div>
-                </div>
-                <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-l-4 border-desert-500 hover:shadow-md transition-all duration-300">
-                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3"><span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5"><i class="fa-solid fa-clock"></i> 10:45 - 12:00</span><span class="text-xs font-bold text-desert-500 flex items-center gap-1 uppercase tracking-wider"><i class="fa-solid fa-utensils"></i> Pause & Repas</span></div>
-                    <h3 class="event-title text-xl font-black text-deepblue-700">🏃‍♂️ Parc de la Voie Ferrée & Déjeuner</h3>
-                    <p class="event-desc text-slate-600 mt-2">Arrêt à "The First Station" à Jérusalem. Le petit de 3 ans se défoule sur l'ancienne voie ferrée et les wagons en bois. Le bébé reste à l'ombre. On mange rapidement (pizzas/burgers) au frais.</p>
-                </div>
-                <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-l-4 border-desert-500 hover:shadow-md transition-all duration-300">
-                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3"><span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5"><i class="fa-solid fa-clock"></i> 12:00 - 13:15</span><span class="text-xs font-bold text-indigo-500 flex items-center gap-1 uppercase tracking-wider"><i class="fa-solid fa-bed"></i> Repos</span></div>
-                    <h3 class="event-title text-xl font-black text-deepblue-700">😴 Sieste en voiture</h3>
-                    <p class="event-desc text-slate-600 mt-2">Pendant la descente vers la mer Morte, les enfants s'endorment à coup sûr. Route tranquille pour les parents.</p>
-                </div>
-                <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-l-4 border-desert-500 hover:shadow-md transition-all duration-300">
-                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3"><span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5"><i class="fa-solid fa-clock"></i> 13:15</span><span class="text-xs font-bold text-desert-500 flex items-center gap-1 uppercase tracking-wider"><i class="fa-solid fa-hammer"></i> Installation</span></div>
-                    <h3 class="event-title text-xl font-black text-deepblue-700">⛺ Arrivée au Camp Sahara & Préparation</h3>
-                    <p class="event-desc text-slate-600 mt-2">On arrive 1h30 avant Papa ! Check-in, installation des ballons, de la banderole "Joyeux 60 ans". Tout le monde se met déjà en maillot de bain.</p>
-                </div>
-                <div class="event-card bg-gradient-to-br from-emerald-50 to-emerald-100/50 rounded-3xl p-6 shadow-lg border-l-8 border-emeraldaccent-500 hover:shadow-xl transition-all duration-300 surprise-glow transform hover:-translate-y-1">
-                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3"><span class="time-badge bg-emeraldaccent-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5 shadow-md"><i class="fa-solid fa-star animate-spin"></i> 15:00</span><span class="text-xs font-extrabold text-emeraldaccent-600 flex items-center gap-1 uppercase tracking-wider animate-pulse"><i class="fa-solid fa-gift"></i> Surprise !</span></div>
-                    <h3 class="event-title text-2xl font-black text-emeraldaccent-600 flex items-center gap-2">👑 LE GRAND MOMENT : SURPRISE !</h3>
-                    <p class="event-desc text-slate-700 font-medium mt-2">Papa arrive au Camp Sahara... et TOUT LE MONDE est là ! Émotion garantie, gros câlins, puis on saute TOUS ensemble dans la piscine pour fêter ça ! 🥳💦</p>
-                </div>
-                <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-l-4 border-desert-500 hover:shadow-md transition-all duration-300">
-                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3"><span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5"><i class="fa-solid fa-clock"></i> 17:30</span><span class="text-xs font-bold text-amber-500 flex items-center gap-1 uppercase tracking-wider"><i class="fa-solid fa-mountain-sun"></i> Crépuscule</span></div>
-                    <h3 class="event-title text-xl font-black text-deepblue-700">🌅 Coucher de soleil à la Mer Morte</h3>
-                    <p class="event-desc text-slate-600 mt-2">Petite séance photo en famille face aux montagnes de Moav. Le petit joue dans le sable.</p>
-                </div>
-                <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-l-4 border-desert-500 hover:shadow-md transition-all duration-300">
-                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3"><span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5"><i class="fa-solid fa-clock"></i> 19:30+</span><span class="text-xs font-bold text-desert-500 flex items-center gap-1 uppercase tracking-wider"><i class="fa-solid fa-fire"></i> Soirée</span></div>
-                    <h3 class="event-title text-xl font-black text-deepblue-700">🔥 Barbecue & Feu de camp</h3>
-                    <p class="event-desc text-slate-600 mt-2">Dîner de fête au glamping, guimauves grillées et soirée sous les étoiles.</p>
-                </div>
-            </div>
-            <div id="j2-fr" class="timeline space-y-4 hidden">
-                <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-l-4 border-seablue-300 hover:shadow-md transition-all duration-300">
-                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3"><span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5"><i class="fa-solid fa-clock"></i> 08:00</span><span class="text-xs font-bold text-amber-500 flex items-center gap-1 uppercase tracking-wider"><i class="fa-solid fa-coffee"></i> Réveil</span></div>
-                    <h3 class="event-title text-xl font-black text-deepblue-700">☕ Matin doux au désert</h3>
-                    <p class="event-desc text-slate-600 mt-2">Petit-déjeuner tranquille sur le campement et café face à l'immensité du désert.</p>
-                </div>
-                <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-l-4 border-seablue-300 hover:shadow-md transition-all duration-300">
-                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3"><span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5"><i class="fa-solid fa-clock"></i> 09:15 - 11:30</span><span class="text-xs font-bold text-emeraldaccent-500 flex items-center gap-1 uppercase tracking-wider"><i class="fa-solid fa-person-walking-hiking"></i> Randonnée</span></div>
-                    <h3 class="event-title text-xl font-black text-deepblue-700">💦 Randonnée aquatique à Ein Gedi</h3>
-                    <p class="event-desc text-slate-600 mt-2">Balade facile à Nahal David jusqu'à la première cascade. Le grand patauge, on croise des bouquetins.</p>
-                </div>
-                <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-l-4 border-seablue-300 hover:shadow-md transition-all duration-300">
-                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3"><span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5"><i class="fa-solid fa-clock"></i> 11:30</span><span class="text-xs font-bold text-seablue-400 flex items-center gap-1 uppercase tracking-wider"><i class="fa-solid fa-person-swimming"></i> Aquatique</span></div>
-                    <h3 class="event-title text-xl font-black text-deepblue-700">🏊‍♂️ Piscine du Camp Sahara</h3>
-                    <p class="event-desc text-slate-600 mt-2">De retour de rando, on plonge directement dans l'eau fraîche du camp.</p>
-                </div>
-                <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-l-4 border-seablue-300 hover:shadow-md transition-all duration-300">
-                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3"><span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5"><i class="fa-solid fa-clock"></i> 13:00 - 15:30</span><span class="text-xs font-bold text-indigo-500 flex items-center gap-1 uppercase tracking-wider"><i class="fa-solid fa-bed"></i> Repos</span></div>
-                    <h3 class="event-title text-xl font-black text-deepblue-700">🍔 Déjeuner & Sieste au frais</h3>
-                    <p class="event-desc text-slate-600 mt-2">Sieste méritée pour tout le monde dans les tentes climatisées.</p>
-                </div>
-                <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-l-4 border-seablue-300 hover:shadow-md transition-all duration-300">
-                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3"><span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5"><i class="fa-solid fa-clock"></i> 15:30</span><span class="text-xs font-bold text-desert-500 flex items-center gap-1 uppercase tracking-wider"><i class="fa-solid fa-ice-cream"></i> Fun</span></div>
-                    <h3 class="event-title text-xl font-black text-deepblue-700"> Fountain Walk & Check-out</h3>
-                    <p class="event-desc text-slate-600 mt-2">Promenade d'Ein Bokek. Le grand s'amuse dans les jets d'eau gratuits et on mange une glace !</p>
-                </div>
-                <div class="event-card bg-gradient-to-br from-deepblue-50 to-white rounded-3xl p-6 shadow-sm border-l-8 border-deepblue-500 hover:shadow-md transition-all duration-300">
-                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3"><span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5 shadow-sm"><i class="fa-solid fa-clock"></i> 18:00+</span><span class="text-xs font-bold text-deepblue-500 flex items-center gap-1 uppercase tracking-wider"><i class="fa-solid fa-house-chimney-user"></i> Fin</span></div>
-                    <h3 class="event-title text-xl font-black text-deepblue-700">😴 Retour paisible vers Raanana</h3>
-                    <p class="event-desc text-slate-600 mt-2 font-medium">Trajet calme avec des souvenirs magiques en tête ! ⛰️🌌</p>
-                </div>
-            </div>
-        </div>
-
-        <div id="content-en" class="lang-content hidden space-y-6">
-            <div id="j1-en" class="timeline space-y-4">
-                <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-l-4 border-desert-500 hover:shadow-md transition-all duration-300 relative">
-                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3"><span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5 shadow-sm"><i class="fa-solid fa-clock"></i> 09:15</span><span class="text-xs font-bold text-desert-500 flex items-center gap-1 uppercase tracking-wider"><i class="fa-solid fa-plane-departure"></i> Departure</span></div>
-                    <h3 class="event-title text-xl font-black text-deepblue-700">🚗 Leaving Raanana</h3>
-                    <p class="event-desc text-slate-600 mt-2">Loading up cars and hitting the road first to beat Dad and set up the party at Camp Sahara!</p>
-                    <div class="tip-box bg-sky-50 rounded-2xl p-4 mt-4 border-r-4 border-seablue-300 flex items-start gap-3"><span class="text-xl">💡</span><p class="text-xs md:text-sm text-slate-600"><strong>Tip:</strong> Keep a separate bag with swimwear, towels, and sunscreen handy so you don't dig through suitcases upon arrival.</p></div>
-                </div>
-                <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-l-4 border-desert-500 hover:shadow-md transition-all duration-300">
-                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3"><span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5"><i class="fa-solid fa-clock"></i> 10:45 - 12:00</span><span class="text-xs font-bold text-desert-500 flex items-center gap-1 uppercase tracking-wider"><i class="fa-solid fa-utensils"></i> Break & Lunch</span></div>
-                    <h3 class="event-title text-xl font-black text-deepblue-700">🏃‍♂️ The First Station & Lunch</h3>
-                    <p class="event-desc text-slate-600 mt-2">Stop in Jerusalem. The 3-year-old can run around the old train tracks while the baby stays in the shade. Quick lunch (pizza/burgers) in the AC.</p>
-                </div>
-                <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-l-4 border-desert-500 hover:shadow-md transition-all duration-300">
-                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3"><span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5"><i class="fa-solid fa-clock"></i> 12:00 - 13:15</span><span class="text-xs font-bold text-indigo-500 flex items-center gap-1 uppercase tracking-wider"><i class="fa-solid fa-bed"></i> Rest</span></div>
-                    <h3 class="event-title text-xl font-black text-deepblue-700">😴 Car Nap</h3>
-                    <p class="event-desc text-slate-600 mt-2">On the way down to the Dead Sea, the kids will surely fall asleep. Peaceful drive for parents.</p>
-                </div>
-                <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-l-4 border-desert-500 hover:shadow-md transition-all duration-300">
-                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3"><span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5"><i class="fa-solid fa-clock"></i> 13:15</span><span class="text-xs font-bold text-desert-500 flex items-center gap-1 uppercase tracking-wider"><i class="fa-solid fa-hammer"></i> Setup</span></div>
-                    <h3 class="event-title text-xl font-black text-deepblue-700">⛺ Arriving at Camp Sahara</h3>
-                    <p class="event-desc text-slate-600 mt-2">Arriving 1.5 hours before Dad! Check-in, put up the "Happy 60th" banners, and change into swimsuits.</p>
-                </div>
-                <div class="event-card bg-gradient-to-br from-emerald-50 to-emerald-100/50 rounded-3xl p-6 shadow-lg border-l-8 border-emeraldaccent-500 hover:shadow-xl transition-all duration-300 surprise-glow transform hover:-translate-y-1">
-                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3"><span class="time-badge bg-emeraldaccent-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5 shadow-md"><i class="fa-solid fa-star animate-spin"></i> 15:00</span><span class="text-xs font-extrabold text-emeraldaccent-600 flex items-center gap-1 uppercase tracking-wider animate-pulse"><i class="fa-solid fa-gift"></i> Surprise !</span></div>
-                    <h3 class="event-title text-2xl font-black text-emeraldaccent-600 flex items-center gap-2">👑 THE BIG MOMENT: SURPRISE!</h3>
-                    <p class="event-desc text-slate-700 font-medium mt-2">Dad arrives thinking it's just a couple's getaway... and EVERYONE is there! Hugs, smiles, and then we all jump in the pool together! 🥳💦</p>
-                </div>
-                <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-l-4 border-desert-500 hover:shadow-md transition-all duration-300">
-                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3"><span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5"><i class="fa-solid fa-clock"></i> 17:30</span><span class="text-xs font-bold text-amber-500 flex items-center gap-1 uppercase tracking-wider"><i class="fa-solid fa-mountain-sun"></i> Sunset</span></div>
-                    <h3 class="event-title text-xl font-black text-deepblue-700">🌅 Dead Sea Sunset</h3>
-                    <p class="event-desc text-slate-600 mt-2">Family photos facing the Moav mountains. The little one can play in the sand.</p>
-                </div>
-                <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-l-4 border-desert-500 hover:shadow-md transition-all duration-300">
-                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3"><span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5"><i class="fa-solid fa-clock"></i> 19:30+</span><span class="text-xs font-bold text-desert-500 flex items-center gap-1 uppercase tracking-wider"><i class="fa-solid fa-fire"></i> Evening</span></div>
-                    <h3 class="event-title text-xl font-black text-deepblue-700">🔥 BBQ & Campfire</h3>
-                    <p class="event-desc text-slate-600 mt-2">Festive dinner at the glamping site, roasting marshmallows under the stars.</p>
-                </div>
-            </div>
-            <div id="j2-en" class="timeline space-y-4 hidden">
-                <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-l-4 border-seablue-300 hover:shadow-md transition-all duration-300">
-                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3"><span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5"><i class="fa-solid fa-clock"></i> 08:00</span><span class="text-xs font-bold text-amber-500 flex items-center gap-1 uppercase tracking-wider"><i class="fa-solid fa-coffee"></i> Morning</span></div>
-                    <h3 class="event-title text-xl font-black text-deepblue-700">☕ Peaceful Desert Morning</h3>
-                    <p class="event-desc text-slate-600 mt-2">Relaxed breakfast on the campsite with great coffee facing the desert view.</p>
-                </div>
-                <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-l-4 border-seablue-300 hover:shadow-md transition-all duration-300">
-                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3"><span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5"><i class="fa-solid fa-clock"></i> 09:15 - 11:30</span><span class="text-xs font-bold text-emeraldaccent-500 flex items-center gap-1 uppercase tracking-wider"><i class="fa-solid fa-person-walking-hiking"></i> Hike</span></div>
-                    <h3 class="event-title text-xl font-black text-deepblue-700">💦 Water Hike at Ein Gedi</h3>
-                    <p class="event-desc text-slate-600 mt-2">Easy, shaded walk through Nahal David to the first waterfall. Perfect splash time for the kids.</p>
-                </div>
-                <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-l-4 border-seablue-300 hover:shadow-md transition-all duration-300">
-                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3"><span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5"><i class="fa-solid fa-clock"></i> 11:30</span><span class="text-xs font-bold text-seablue-400 flex items-center gap-1 uppercase tracking-wider"><i class="fa-solid fa-person-swimming"></i> Pool</span></div>
-                    <h3 class="event-title text-xl font-black text-deepblue-700">🏊‍♂️ Camp Sahara Pool Round 2</h3>
-                    <p class="event-desc text-slate-600 mt-2">Back from the hike, we jump right into the cool waters of the camp pool.</p>
-                </div>
-                <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-l-4 border-seablue-300 hover:shadow-md transition-all duration-300">
-                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3"><span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5"><i class="fa-solid fa-clock"></i> 13:00 - 15:30</span><span class="text-xs font-bold text-indigo-500 flex items-center gap-1 uppercase tracking-wider"><i class="fa-solid fa-bed"></i> Nap</span></div>
-                    <h3 class="event-title text-xl font-black text-deepblue-700">🍔 Lunch & Cool Nap</h3>
-                    <p class="event-desc text-slate-600 mt-2">Light lunch followed by a well-deserved nap inside the air-conditioned tents.</p>
-                </div>
-                <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-l-4 border-seablue-300 hover:shadow-md transition-all duration-300">
-                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3"><span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5"><i class="fa-solid fa-clock"></i> 15:30</span><span class="text-xs font-bold text-desert-500 flex items-center gap-1 uppercase tracking-wider"><i class="fa-solid fa-ice-cream"></i> Fun</span></div>
-                    <h3 class="event-title text-xl font-black text-deepblue-700"> Fountain Splash & Check-out</h3>
-                    <p class="event-desc text-slate-600 mt-2">Heading over to Ein Bokek beach promenade. The kids play in the water jets, ending with ice cream!</p>
-                </div>
-                <div class="event-card bg-gradient-to-br from-deepblue-50 to-white rounded-3xl p-6 shadow-sm border-l-8 border-deepblue-500 hover:shadow-md transition-all duration-300">
-                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3"><span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5 shadow-sm"><i class="fa-solid fa-clock"></i> 18:00+</span><span class="text-xs font-bold text-deepblue-500 flex items-center gap-1 uppercase tracking-wider"><i class="fa-solid fa-house-chimney-user"></i> End</span></div>
-                    <h3 class="event-title text-xl font-black text-deepblue-700">😴 Heading back to Raanana</h3>
-                    <p class="event-desc text-slate-600 mt-2 font-medium">The kids will sleep all the way home. A quiet drive with beautiful family memories! ⛰️🌌</p>
-                </div>
-            </div>
-        </div>
-
-        <div id="content-he" class="lang-content hidden space-y-6" dir="rtl">
-            <div id="j1-he" class="timeline space-y-4">
-                <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-r-4 border-desert-500 hover:shadow-md transition-all duration-300">
-                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3"><span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5 shadow-sm"><i class="fa-solid fa-clock ml-1.5"></i> 09:15</span><span class="text-xs font-bold text-desert-500 flex items-center gap-1 uppercase tracking-wider font-hebrew"><i class="fa-solid fa-plane-departure ml-1"></i> יציאה</span></div>
-                    <h3 class="event-title text-xl font-black text-deepblue-700 font-hebrew">🚗 יוצאים מרעננה</h3>
-                    <p class="event-desc text-slate-600 mt-2 font-hebrew font-sans">אורזים את הרכבים ויוצאים ראשונים כדי להקדים את אבא ולהספיק להתארגן בקמפ סהרה לפני שהוא מגיע!</p>
-                </div>
-                <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-r-4 border-desert-500 hover:shadow-md transition-all duration-300">
-                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3"><span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5"><i class="fa-solid fa-clock ml-1.5"></i> 10:45 - 12:00</span><span class="text-xs font-bold text-desert-500 flex items-center gap-1 uppercase tracking-wider font-hebrew"><i class="fa-solid fa-utensils ml-1"></i> עצירה ואוכל</span></div>
-                    <h3 class="event-title text-xl font-black text-deepblue-700 font-hebrew">🏃‍♂️ פארק המסילה וארוחת צהריים</h3>
-                    <p class="event-desc text-slate-600 mt-2 font-hebrew">עוצרים במתחם התחנה הראשונה בירושלים. בן ה-3 רץ ומשתולל. אוכלים משהו זריז במזגן.</p>
-                </div>
-                <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-r-4 border-desert-500 hover:shadow-md transition-all duration-300">
-                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3"><span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5"><i class="fa-solid fa-clock ml-1.5"></i> 12:00 - 13:15</span><span class="text-xs font-bold text-indigo-500 flex items-center gap-1 uppercase tracking-wider font-hebrew"><i class="fa-solid fa-bed ml-1"></i> מנוחה</span></div>
-                    <h3 class="event-title text-xl font-black text-deepblue-700 font-hebrew">😴 שנת צהריים באוטו</h3>
-                    <p class="event-desc text-slate-600 mt-2 font-hebrew">בזמן הנסיעה לים המלח, הילדים נרדמים בשניות. נסיעה שקטה להורים.</p>
-                </div>
-                <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-r-4 border-desert-500 hover:shadow-md transition-all duration-300">
-                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3"><span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5"><i class="fa-solid fa-clock ml-1.5"></i> 13:15</span><span class="text-xs font-bold text-desert-500 flex items-center gap-1 uppercase tracking-wider font-hebrew"><i class="fa-solid fa-hammer ml-1"></i> התארגנות</span></div>
-                    <h3 class="event-title text-xl font-black text-deepblue-700 font-hebrew">⛺ הגעה מוקדמת לקמפ סהרה</h3>
-                    <p class="event-desc text-slate-600 mt-2 font-hebrew">מגיעים שעה וחצי לפני אבא! תולים שלטים ובלונים ומחליפים לבגדי ים.</p>
-                </div>
-                <div class="event-card bg-gradient-to-br from-emerald-50 to-emerald-100/50 rounded-3xl p-6 shadow-lg border-r-8 border-emeraldaccent-500 hover:shadow-xl transition-all duration-300 surprise-glow transform hover:-translate-y-1">
-                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3"><span class="time-badge bg-emeraldaccent-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5 shadow-md"><i class="fa-solid fa-star animate-spin ml-1.5"></i> 15:00</span><span class="text-xs font-extrabold text-emeraldaccent-600 flex items-center gap-1 uppercase tracking-wider font-hebrew animate-pulse"><i class="fa-solid fa-gift ml-1"></i> הפתעה!</span></div>
-                    <h3 class="event-title text-2xl font-black text-emeraldaccent-600 flex items-center gap-2 font-hebrew">👑 הרגע הגדול: הפתעה!</h3>
-                    <p class="event-desc text-slate-700 font-medium mt-2 font-hebrew">אבא נכנס למתחם ופתאום - הפתעה! כל השבט מחכה לו. חיבוקים, וישר קופצים כולם יחד לבריכה! 🥳💦</p>
-                </div>
-                <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-r-4 border-desert-500 hover:shadow-md transition-all duration-300">
-                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3"><span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5"><i class="fa-solid fa-clock ml-1.5"></i> 17:30</span><span class="text-xs font-bold text-amber-500 flex items-center gap-1 uppercase tracking-wider font-hebrew"><i class="fa-solid fa-mountain-sun ml-1"></i> שקיעה</span></div>
-                    <h3 class="event-title text-xl font-black text-deepblue-700 font-hebrew">🌅 סיבוב שקיעה בים המלח</h3>
-                    <p class="event-desc text-slate-600 mt-2 font-hebrew">תמונות משפחתיות מדהימות מול הרי מואב. בן ה-3 משחק בחול.</p>
-                </div>
-                <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-r-4 border-desert-500 hover:shadow-md transition-all duration-300">
-                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3"><span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5"><i class="fa-solid fa-clock ml-1.5"></i> 19:30+</span><span class="text-xs font-bold text-desert-500 flex items-center gap-1 uppercase tracking-wider font-hebrew"><i class="fa-solid fa-fire ml-1"></i> ערב במדבר</span></div>
-                    <h3 class="event-title text-xl font-black text-deepblue-700 font-hebrew">🔥 על האש ומדורה</h3>
-                    <p class="event-desc text-slate-600 mt-2 font-hebrew">ארוחת ערב חגיגית בגלमפינג, מרשמלו על האש ויושבים מתחת לכוכבים.</p>
-                </div>
-            </div>
-            <div id="j2-he" class="timeline space-y-4 hidden">
-                <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-r-4 border-seablue-300 hover:shadow-md transition-all duration-300">
-                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3"><span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5"><i class="fa-solid fa-clock ml-1.5"></i> 08:00</span><span class="text-xs font-bold text-amber-500 flex items-center gap-1 uppercase tracking-wider font-hebrew"><i class="fa-solid fa-coffee ml-1"></i> בוקר</span></div>
-                    <h3 class="event-title text-xl font-black text-deepblue-700 font-hebrew">☕ בוקר רגוע במדבר</h3>
-                    <p class="event-desc text-slate-600 mt-2 font-hebrew">מתעוררים בנחת בקמפ סהרה, ארוחת בוקר קלילה מול הנוף.</p>
-                </div>
-                <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-r-4 border-seablue-300 hover:shadow-md transition-all duration-300">
-                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3"><span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5"><i class="fa-solid fa-clock ml-1.5"></i> 09:15 - 11:30</span><span class="text-xs font-bold text-emeraldaccent-500 flex items-center gap-1 uppercase tracking-wider font-hebrew"><i class="fa-solid fa-person-walking-hiking ml-1"></i> מסלול</span></div>
-                    <h3 class="event-title text-xl font-black text-deepblue-700 font-hebrew">💦 טיול מים בעין גדי</h3>
-                    <p class="event-desc text-slate-600 mt-2 font-hebrew">הליכה מוצלת וקלה בנחל דוד עד למפל הראשון. הילדים משתכשכים במים.</p>
-                </div>
-                <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-r-4 border-seablue-300 hover:shadow-md transition-all duration-300">
-                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3"><span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5"><i class="fa-solid fa-clock ml-1.5"></i> 11:30</span><span class="text-xs font-bold text-seablue-400 flex items-center gap-1 uppercase tracking-wider font-hebrew"><i class="fa-solid fa-person-swimming ml-1"></i> בריכה</span></div>
-                    <h3 class="event-title text-xl font-black text-deepblue-700 font-hebrew">🏊‍♂️ סבב בריכה שני בקמפ סהרה</h3>
-                    <p class="event-desc text-slate-600 mt-2 font-hebrew">חוזרים מהטיול וישר קופצים למים הקרירים של הבריכה.</p>
-                </div>
-                <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-r-4 border-seablue-300 hover:shadow-md transition-all duration-300">
-                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3"><span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5"><i class="fa-solid fa-clock ml-1.5"></i> 13:00 - 15:30</span><span class="text-xs font-bold text-indigo-500 flex items-center gap-1 uppercase tracking-wider font-hebrew"><i class="fa-solid fa-bed ml-1"></i> מנוחה</span></div>
-                    <h3 class="event-title text-xl font-black text-deepblue-700 font-hebrew">🍔 ארוחת צהריים ושנ"צ ממוזג</h3>
-                    <p class="event-desc text-slate-600 mt-2 font-hebrew">נכנסים לאוהלים הממוזגים למנוחת צהריים טובה.</p>
-                </div>
-                <div class="event-card bg-white rounded-3xl p-6 shadow-sm border-r-4 border-seablue-300 hover:shadow-md transition-all duration-300">
-                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3"><span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5"><i class="fa-solid fa-clock ml-1.5"></i> 15:30</span><span class="text-xs font-bold text-desert-500 flex items-center gap-1 uppercase tracking-wider font-hebrew"><i class="fa-solid fa-ice-cream ml-1"></i> כיף</span></div>
-                    <h3 class="event-title text-xl font-black text-deepblue-700 font-hebrew"> Fountain Splash & Check-out</h3>
-                    <p class="event-desc text-slate-600 mt-2 font-hebrew">נוסעים לטיילת עין בוקק. הילדים נהנים במזרקות ומקנחים בגלידה!</p>
-                </div>
-                <div class="event-card bg-gradient-to-br from-deepblue-50 to-white rounded-3xl p-6 shadow-sm border-r-8 border-deepblue-500 hover:shadow-md transition-all duration-300">
-                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3"><span class="time-badge bg-deepblue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full flex items-center gap-1.5 shadow-sm"><i class="fa-solid fa-clock ml-1.5"></i> 18:00+</span><span class="text-xs font-bold text-deepblue-500 flex items-center gap-1 uppercase tracking-wider font-hebrew animate-pulse"><i class="fa-solid fa-house-chimney-user ml-1"></i> חוזרים</span></div>
-                    <h3 class="event-title text-xl font-black text-deepblue-700 font-hebrew">😴 נסיעה חלקה חזרה לרעננה</h3>
-                    <p class="event-desc text-slate-600 mt-2 font-hebrew font-medium">הילדים ישנים חזק כל הדרך הביתה. נסיעה שקטה עם זיכרונות מטורפים! ⛰️🌌</p>
-                </div>
-            </div>
-        </div>
-
-        <section class="mt-12 bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-slate-100">
-            <div class="flex items-center gap-3 mb-6">
-                <span class="text-3xl">🎒</span>
-                <div>
-                    <h2 id="pack-title-fr" class="lang-content text-2xl font-black text-deepblue-700">Checklist Interactive des Bagages</h2>
-                    <h2 id="pack-title-en" class="lang-content text-2xl font-black text-deepblue-700 hidden">Interactive Packing Checklist</h2>
-                    <h2 id="pack-title-he" class="lang-content text-2xl font-black text-deepblue-700 hidden font-hebrew">רשימת ציוד אינטראקטיבית</h2>
-                    <p id="pack-subtitle-fr" class="lang-content text-xs text-slate-400 uppercase font-bold tracking-wider">Cochez les affaires au fur et à mesure</p>
-                    <p id="pack-subtitle-en" class="lang-content text-xs text-slate-400 uppercase font-bold tracking-wider hidden">Tick items off as you pack</p>
-                    <p id="pack-subtitle-he" class="lang-content text-xs text-slate-400 uppercase font-bold tracking-wider hidden font-hebrew">מסמנים וי על הציוד שארוז</p>
-                </div>
-            </div>
-
-            <div id="checklist-cats-fr" class="lang-content flex flex-wrap gap-2 mb-6">
-                <button onclick="filterChecklist('all')" class="check-cat-btn active bg-deepblue-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-sm transition-all" data-cat="all">Tout</button>
-                <button onclick="filterChecklist('kids')" class="check-cat-btn bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold px-3 py-1.5 rounded-full transition-all" data-cat="kids">Bébé & Enfants 👶</button>
-                <button onclick="filterChecklist('swim')" class="check-cat-btn bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold px-3 py-1.5 rounded-full transition-all" data-cat="swim">Baignade & Soleil 🏖️</button>
-                <button onclick="filterChecklist('desert')" class="check-cat-btn bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold px-3 py-1.5 rounded-full transition-all" data-cat="desert">Hike & Désert 🌵</button>
-                <button onclick="filterChecklist('surprise')" class="check-cat-btn bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold px-3 py-1.5 rounded-full transition-all" data-cat="surprise">Logistique Surprise 🎉</button>
-            </div>
-
-            <div id="checklist-cats-en" class="lang-content hidden flex flex-wrap gap-2 mb-6">
-                <button onclick="filterChecklist('all')" class="check-cat-btn active bg-deepblue-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-sm transition-all" data-cat="all">All</button>
-                <button onclick="filterChecklist('kids')" class="check-cat-btn bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold px-3 py-1.5 rounded-full transition-all" data-cat="kids">Baby & Kids 👶</button>
-                <button onclick="filterChecklist('swim')" class="check-cat-btn bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold px-3 py-1.5 rounded-full transition-all" data-cat="swim">Swim & Sun 🏖️</button>
-                <button onclick="filterChecklist('desert')" class="check-cat-btn bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold px-3 py-1.5 rounded-full transition-all" data-cat="desert">Hike & Desert 🌵</button>
-                <button onclick="filterChecklist('surprise')" class="check-cat-btn bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold px-3 py-1.5 rounded-full transition-all" data-cat="surprise">Surprise Logistics 🎉</button>
-            </div>
-
-            <div id="checklist-cats-he" class="lang-content hidden flex flex-wrap gap-2 mb-6" dir="rtl">
-                <button onclick="filterChecklist('all')" class="check-cat-btn active bg-deepblue-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-sm transition-all font-hebrew" data-cat="all">הכל</button>
-                <button onclick="filterChecklist('kids')" class="check-cat-btn bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold px-3 py-1.5 rounded-full transition-all font-hebrew" data-cat="kids">תינוק וילדים 👶</button>
-                <button onclick="filterChecklist('swim')" class="check-cat-btn bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold px-3 py-1.5 rounded-full transition-all font-hebrew" data-cat="swim">בריכה ושמש 🏖️</button>
-                <button onclick="filterChecklist('desert')" class="check-cat-btn bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold px-3 py-1.5 rounded-full transition-all font-hebrew" data-cat="desert">מדבר ומסלולים 🌵</button>
-                <button onclick="filterChecklist('surprise')" class="check-cat-btn bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold px-3 py-1.5 rounded-full transition-all font-hebrew" data-cat="surprise">לוגיסטיקה והפתעה 🎉</button>
-            </div>
-
-            <div id="checklist-items" class="space-y-2.5 max-h-[350px] overflow-y-auto pr-2"></div>
-            
-            <div class="mt-5 pt-4 border-t border-slate-100 flex justify-end">
-                <button onclick="resetChecklist()" class="text-xs text-slate-400 hover:text-red-500 transition-colors flex items-center gap-1">
-                    <i class="fa-solid fa-trash-can"></i> 
-                    <span id="reset-checklist-lbl-fr" class="lang-content">Réinitialiser</span>
-                    <span id="reset-checklist-lbl-en" class="lang-content hidden">Reset List</span>
-                    <span id="reset-checklist-lbl-he" class="lang-content hidden font-hebrew">איפוס הרשימה</span>
-                </button>
-            </div>
-        </section>
-
-        <section class="mt-8 bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-slate-100">
-            <div class="flex items-center gap-3 mb-6">
-                <span class="text-3xl">🍢</span>
-                <div>
-                    <h2 id="coord-title-fr" class="lang-content text-2xl font-black text-deepblue-700">Qui apporte quoi ? (Barbecue & Fête)</h2>
-                    <h2 id="coord-title-en" class="lang-content text-2xl font-black text-deepblue-700 hidden">Who is bringing what? (BBQ & Party)</h2>
-                    <h2 id="coord-title-he" class="lang-content text-2xl font-black text-deepblue-700 hidden font-hebrew">מי מביא מה? (על האש והאירוע)</h2>
-                    <p id="coord-subtitle-fr" class="lang-content text-xs text-slate-400 uppercase font-bold tracking-wider">Répartition des tâches familiales</p>
-                    <p id="coord-subtitle-en" class="lang-content text-xs text-slate-400 uppercase font-bold tracking-wider hidden">Family tasks and groceries distribution</p>
-                    <p id="coord-subtitle-he" class="lang-content text-xs text-slate-400 uppercase font-bold tracking-wider hidden font-hebrew">חלוקת משימות וקניות משפחתיות</p>
-                </div>
-            </div>
-            <div id="coordination-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
-        </section>
-
-        <section class="mt-8 bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-slate-100">
-            <div class="flex items-center gap-3 mb-6">
-                <span class="text-3xl">📍</span>
-                <div>
-                    <h2 id="map-title-fr" class="lang-content text-2xl font-black text-deepblue-700">Adresses & Navigation</h2>
-                    <h2 id="map-title-en" class="lang-content text-2xl font-black text-deepblue-700 hidden">Addresses & Directions</h2>
-                    <h2 id="map-title-he" class="lang-content text-2xl font-black text-deepblue-700 hidden font-hebrew">כתובות וניווט מהיר</h2>
-                </div>
-            </div>
-
-            <div class="space-y-3">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-slate-50 hover:bg-slate-100/75 rounded-2xl border border-slate-100 transition-colors gap-3">
-                    <div class="flex items-start gap-3">
-                        <span class="text-xl bg-desert-100 text-desert-500 w-10 h-10 rounded-xl flex items-center justify-center font-bold">1</span>
-                        <div>
-                            <h4 class="font-bold text-slate-800 text-sm md:text-base">
-                                <span class="lang-content" id="nav-p1-fr">Pause Midi: The First Station (Jérusalem)</span>
-                                <span class="lang-content hidden" id="nav-p1-en">Lunch Stop: The First Station (Jerusalem)</span>
-                                <span class="lang-content hidden font-hebrew" id="nav-p1-he">עצירת צהריים: התחנה הראשונה (ירושלים)</span>
-                            </h4>
-                            <p class="text-xs text-slate-400">David Remez St 4, Jerusalem</p>
-                        </div>
-                    </div>
-                    <div class="flex gap-2 self-end sm:self-center">
-                        <a href="https://waze.com/ul?q=The+First+Station+Jerusalem" target="_blank" class="px-3.5 py-1.5 bg-[#33ccff] text-white text-xs font-extrabold rounded-xl shadow-sm"><i class="fa-brands fa-waze"></i> Waze</a>
-                    </div>
-                </div>
-
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-slate-50 hover:bg-slate-100/75 rounded-2xl border border-slate-100 transition-colors gap-3">
-                    <div class="flex items-start gap-3">
-                        <span class="text-xl bg-desert-100 text-desert-500 w-10 h-10 rounded-xl flex items-center justify-center font-bold">2</span>
-                        <div>
-                            <h4 class="font-bold text-slate-800 text-sm md:text-base">
-                                <span class="lang-content" id="nav-p2-fr">Le Campement: Camp Sahara</span>
-                                <span class="lang-content hidden" id="nav-p2-en">Campsite: Camp Sahara Glamping</span>
-                                <span class="lang-content hidden font-hebrew" id="nav-p2-he">מתחם האירוח: קמפ סהרה גלמפינג</span>
-                            </h4>
-                            <p class="text-xs text-slate-400">Camp Sahara, Kalia Beach area, Dead Sea</p>
-                        </div>
-                    </div>
-                    <div class="flex gap-2 self-end sm:self-center">
-                        <a href="https://waze.com/ul?q=קמפ+סהרה+ים+המלח" target="_blank" class="px-3.5 py-1.5 bg-[#33ccff] text-white text-xs font-extrabold rounded-xl"><i class="fa-brands fa-waze"></i> Waze</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <script>
-        let config = {
-            lang: 'fr',
-            activeTab: 'j1',
-            targetDate: null
-        };
-
-        const packingData = [
-            { id: 'p1', cat: 'kids', fr: 'Couches pour le petit et le bébé 👶', en: 'Diapers for toddler and baby 👶', he: 'חיתולים לקטן ולתינוק 👶' },
-            { id: 'p2', cat: 'kids', fr: 'Porte-bébé de rando (indispensable)', en: 'Hiking baby carrier (essential)', he: 'מנשא טיולים לתינוק (חובה)' },
-            { id: 'p3', cat: 'kids', fr: 'Chapeaux de soleil & Casquettes', en: 'Sun hats & Caps for kids', he: 'כובעי שמש ומצחיות לילדים' },
-            { id: 'p6', cat: 'swim', fr: 'Maillots de bain pour tous', en: 'Swimwear for the whole family', he: 'בגדי ים לכל המשפחה' },
-            { id: 'p9', cat: 'swim', fr: 'Crème solaire 50+ 🧴', en: 'Sunscreen SPF 50+ 🧴', he: 'קרם הגנה SPF 50+ 🧴' },
-            { id: 'p11', cat: 'desert', fr: 'Sandales d\'eau (Nahal David)', en: 'Water shoes (Nahal David)', he: 'סנדלי מים/שורש (נחל דוד)' },
-            { id: 'p13', cat: 'surprise', fr: 'Banderole "Joyeux 60 ans !" 🎉', en: '"Happy 60th Birthday" Banner 🎉', he: 'שלט "מזל טוב לגיל 60!" 🎉' }
-        ];
-
-        const coordinationData = [
-            { id: 'c1', cat_fr: '🥩 Viande & Grillades', cat_en: '🥩 BBQ Meats', cat_he: '🥩 בשרים ועל האש', placeholder_fr: 'Qui apporte ?', placeholder_en: 'Who is bringing?', placeholder_he: 'מי מביא?' },
-            { id: 'c2', cat_fr: '🍻 Boissons & Apéro', cat_en: '🍻 Drinks & Beers', cat_he: '🍻 שתייה קלה ובירות', placeholder_fr: 'Qui apporte ?', placeholder_en: 'Who is bringing?', placeholder_he: 'מי מביא?' }
-        ];
-
-        let checkedItems = {};
-        let coordAssignments = {};
-
-        window.onload = function() {
-            loadSavedData();
-            initCountdown();
-            renderChecklist();
-            renderCoordination();
-            applyLanguage();
-        };
-
-        function loadSavedData() {
-            const savedLang = localStorage.getItem('glamp_lang');
-            if (savedLang) config.lang = savedLang;
-
-            const savedDate = localStorage.getItem('glamp_target_date');
-            if (savedDate) {
-                config.targetDate = savedDate;
-            } else {
-                let defaultTarget = new Date();
-                defaultTarget.setDate(defaultTarget.getDate() + 7);
-                defaultTarget.setHours(15, 0, 0, 0);
-                config.targetDate = defaultTarget.toISOString().slice(0, 16);
-            }
-
-            checkedItems = JSON.parse(localStorage.getItem('glamp_checked_items')) || {};
-            coordAssignments = JSON.parse(localStorage.getItem('glamp_coord_assignments')) || {};
-        }
-
-        function switchLang(lang) {
-            config.lang = lang;
-            localStorage.setItem('glamp_lang', lang);
-            applyLanguage();
-        }
-
-        function applyLanguage() {
-            ['fr', 'en', 'he'].forEach(l => {
-                const btn = document.getElementById(`lang-btn-${l}`);
-                if (l === config.lang) {
-                    btn.className = "px-3 py-1.5 rounded-full font-bold uppercase bg-white text-deepblue-600 shadow border border-slate-200";
-                } else {
-                    btn.className = "px-3 py-1.5 rounded-full font-bold uppercase text-slate-500 hover:text-slate-800";
-                }
-            });
-
-            if (config.lang === 'he') {
-                document.body.setAttribute('dir', 'rtl');
-                document.body.classList.add('font-hebrew');
-            } else {
-                document.body.removeAttribute('dir');
-                document.body.classList.remove('font-hebrew');
-            }
-
-            document.querySelectorAll('.lang-content').forEach(el => {
-                if (el.id && el.id.endsWith(`-${config.lang}`)) {
-                    el.classList.remove('hidden');
-                } else if (el.id && (el.id.endsWith('-fr') || el.id.endsWith('-en') || el.id.endsWith('-he'))) {
-                    el.classList.add('hidden');
-                }
-            });
-
-            renderChecklist();
-            renderCoordination();
-            applyTab();
-        }
-
-        function switchTab(tab) {
-            config.activeTab = tab;
-            applyTab();
-        }
-
-        function applyTab() {
-            const btnJ1 = document.getElementById('btn-j1');
-            const btnJ2 = document.getElementById('btn-j2');
-            
-            if (config.activeTab === 'j1') {
-                btnJ1.className = "tab-btn bg-desert-500 text-white font-black py-4 px-6 rounded-2xl shadow-lg flex flex-col items-center gap-1 w-full";
-                btnJ2.className = "tab-btn bg-white hover:bg-slate-50 text-deepblue-500 font-black py-4 px-6 rounded-2xl shadow-md border border-slate-100 flex flex-col items-center gap-1 w-full";
-            } else {
-                btnJ2.className = "tab-btn bg-desert-500 text-white font-black py-4 px-6 rounded-2xl shadow-lg flex flex-col items-center gap-1 w-full";
-                btnJ1.className = "tab-btn bg-white hover:bg-slate-50 text-deepblue-500 font-black py-4 px-6 rounded-2xl shadow-md border border-slate-100 flex flex-col items-center gap-1 w-full";
-            }
-
-            document.querySelectorAll('.timeline').forEach(el => el.classList.add('hidden'));
-            const activeTimeline = document.getElementById(`${config.activeTab}-${config.lang}`);
-            if (activeTimeline) activeTimeline.classList.remove('hidden');
-        }
-
-        let timerInterval;
-        function initCountdown() {
-            if (timerInterval) clearInterval(timerInterval);
-            function updateTimer() {
-                const target = new Date(config.targetDate).getTime();
-                const now = new Date().getTime();
-                const diff = target - now;
-                if (diff <= 0) return;
-
-                document.getElementById('count-days').innerText = Math.floor(diff / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
-                document.getElementById('count-hours').innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
-                document.getElementById('count-mins').innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
-                document.getElementById('count-secs').innerText = Math.floor((diff % (1000 * 60)) / 1000).toString().padStart(2, '0');
-            }
-            updateTimer();
-            timerInterval = setInterval(updateTimer, 1000);
-        }
-
-        function openDateModal() {
-            document.getElementById('input-target-date').value = config.targetDate;
-            document.getElementById('date-modal').classList.remove('hidden');
-        }
-        function closeDateModal() { document.getElementById('date-modal').classList.add('hidden'); }
-        
-        function saveTargetDate() {
-            const val = document.getElementById('input-target-date').value;
-            if (val) {
-                config.targetDate = val;
-                localStorage.setItem('glamp_target_date', val);
-                initCountdown();
-                closeDateModal();
-            }
-        }
-        function resetTargetDate() {
-            localStorage.removeItem('glamp_target_date');
-            loadSavedData();
-            initCountdown();
-            closeDateModal();
-        }
-
-        function toggleChecklistItem(id) {
-            checkedItems[id] = !checkedItems[id];
-            localStorage.setItem('glamp_checked_items', JSON.stringify(checkedItems));
-            renderChecklist();
-        }
-        function resetChecklist() {
-            checkedItems = {};
-            localStorage.removeItem('glamp_checked_items');
-            renderChecklist();
-        }
-
-        let activeChecklistFilter = 'all';
-        function filterChecklist(cat) {
-            activeChecklistFilter = cat;
-            renderChecklist();
-        }
-
-        function renderChecklist() {
-            const container = document.getElementById('checklist-items');
-            container.innerHTML = '';
-            const filtered = packingData.filter(item => activeChecklistFilter === 'all' || item.cat === activeChecklistFilter);
-
-            filtered.forEach(item => {
-                const isChecked = checkedItems[item.id] || false;
-                const text = item[config.lang] || item.fr;
-
-                const wrapper = document.createElement('div');
-                wrapper.className = `flex items-center justify-between p-3 rounded-2xl border ${isChecked ? 'bg-emerald-50/50 line-through text-slate-400' : 'bg-slate-50'}`;
-                wrapper.innerHTML = `
-                    <label class="flex items-center gap-3 w-full cursor-pointer select-none">
-                        <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleChecklistItem('${item.id}')" class="w-5 h-5 text-desert-500 rounded">
-                        <span class="text-xs md:text-sm font-semibold">${text}</span>
+            {/* Custom Date Changer Form */}
+            {isEditingDate && (
+              <div className="mb-6 p-4 rounded-2xl bg-orange-50/50 border border-orange-100/80 animate-fadeIn">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-end">
+                  <div>
+                    <label className="block text-xs font-bold text-amber-900 mb-1">
+                      Choose Date & Time (ISO format)
                     </label>
-                `;
-                container.appendChild(wrapper);
-            });
-        }
+                    <input 
+                      type="datetime-local" 
+                      value={tempDateStr}
+                      onChange={(e) => setTempDateStr(e.target.value)}
+                      className="w-full bg-white border border-orange-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 text-slate-700"
+                    />
+                  </div>
+                  <div className="flex gap-2">
+                    <button 
+                      onClick={() => {
+                        setTargetDateStr(tempDateStr);
+                        setIsEditingDate(false);
+                      }} 
+                      className="flex-1 bg-orange-600 text-white font-bold text-xs py-2 px-4 rounded-xl shadow-md hover:bg-orange-700 transition"
+                    >
+                      {TRANSLATIONS[lang].save}
+                    </button>
+                    <button 
+                      onClick={() => {
+                        setTargetDateStr("2026-06-14T15:00:00");
+                        setIsEditingDate(false);
+                      }} 
+                      className="bg-slate-200 text-slate-700 font-bold text-xs py-2 px-3 rounded-xl hover:bg-slate-300 transition"
+                    >
+                      {TRANSLATIONS[lang].reset}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
 
-        function renderCoordination() {
-            const container = document.getElementById('coordination-list');
-            container.innerHTML = '';
+            {/* Countdown Numbers */}
+            <div className="grid grid-cols-4 gap-2 md:gap-4 text-center">
+              {[
+                { label: TRANSLATIONS[lang].days, value: timeLeft.days, color: 'from-orange-500 to-amber-500' },
+                { label: TRANSLATIONS[lang].hours, value: timeLeft.hours, color: 'from-amber-500 to-yellow-500' },
+                { label: TRANSLATIONS[lang].minutes, value: timeLeft.minutes, color: 'from-yellow-500 to-orange-400' },
+                { label: TRANSLATIONS[lang].seconds, value: timeLeft.seconds, color: 'from-orange-400 to-rose-500' }
+              ].map((item, idx) => (
+                <div key={idx} className="bg-gradient-to-b from-[#FFFDF9] to-[#FFF6EB] p-3 md:p-5 rounded-2xl border border-orange-50/60 shadow-inner">
+                  <div className={`text-3xl md:text-5xl font-black bg-gradient-to-r ${item.color} bg-clip-text text-transparent tracking-tight`}>
+                    {String(item.value).padStart(2, '0')}
+                  </div>
+                  <div className="text-[10px] md:text-xs font-bold text-amber-900/60 uppercase tracking-widest mt-1">
+                    {item.label}
+                  </div>
+                </div>
+              ))}
+            </div>
 
-            coordinationData.forEach(item => {
-                const label = item[`cat_${config.lang}`] || item.cat_fr;
-                const placeholder = item[`placeholder_${config.lang}`] || item.placeholder_fr;
-                const currentVal = coordAssignments[item.id] || '';
+            {timeLeft.ended && (
+              <div className="mt-4 p-3 bg-green-50 rounded-xl border border-green-200 text-center text-green-800 font-bold text-sm">
+                🎉 LE GRAND MOMENT EST ARRIVÉ ! SURPRISE !!! 🎉
+              </div>
+            )}
+          </div>
 
-                const card = document.createElement('div');
-                card.className = "p-4 bg-slate-50 rounded-2xl border flex flex-col justify-between";
-                card.innerHTML = `
-                    <h4 class="font-extrabold text-xs text-deepblue-600 uppercase mb-2">${label}</h4>
-                    <input type="text" value="${currentVal}" placeholder="${placeholder}" oninput="saveCoordination('${item.id}', this.value)" class="w-full text-xs p-3 rounded-xl border bg-white">
-                `;
-                container.appendChild(card);
-            });
-        }
+          {/* NAKACHE FAMILY BLESSING CARD */}
+          <div className="bg-gradient-to-r from-amber-50 via-orange-50 to-amber-100 rounded-3xl p-6 md:p-8 shadow-xl border-2 border-amber-300 relative overflow-hidden">
+            <div className="absolute -top-10 -right-10 w-32 h-32 bg-yellow-300/20 rounded-full blur-2xl" />
+            <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-orange-400/20 rounded-full blur-2xl" />
+            
+            <div className="relative z-10 text-center space-y-4">
+              <span className="text-4xl animate-pulse block">👑</span>
+              <h2 className="text-xl md:text-2xl font-black text-amber-950 tracking-tight">
+                {TRANSLATIONS[lang].blessing_title}
+              </h2>
+              
+              <div className="max-w-2xl mx-auto">
+                <p className="text-sm md:text-base text-amber-900 leading-relaxed font-serif italic font-medium whitespace-pre-line">
+                  "{TRANSLATIONS[lang].blessing_text}"
+                </p>
+              </div>
 
-        function saveCoordination(id, val) {
-            coordAssignments[id] = val;
-            localStorage.setItem('glamp_coord_assignments', JSON.stringify(coordAssignments));
-        }
-    </script>
-</body>
-</html>
+              <div className="pt-3 border-t border-amber-200/60 max-w-md mx-auto">
+                <p className="text-xs md:text-sm font-extrabold text-amber-950 uppercase tracking-wider">
+                  {TRANSLATIONS[lang].blessing_signature}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* FAMILY PHOTO BANNER CARD */}
+          <div className="bg-white rounded-3xl p-6 shadow-xl border border-orange-50 relative overflow-hidden text-center">
+            <div className="max-w-md mx-auto relative group">
+              {/* Custom high fidelity artistic illustration frame of a happy family */}
+              <div className="aspect-[16/9] w-full bg-gradient-to-br from-amber-100 via-orange-100 to-rose-100 rounded-2xl flex flex-col items-center justify-center p-6 relative overflow-hidden border-2 border-dashed border-orange-200">
+                <div className="absolute top-4 left-4 text-xl">🐪</div>
+                <div className="absolute bottom-4 right-4 text-xl">🌵</div>
+                <div className="absolute top-2 right-8 text-3xl opacity-20">☀️</div>
+                
+                {/* SVG representing a joyful stylized family under palm trees */}
+                <svg className="w-48 h-24 text-amber-800/80 mb-2" fill="none" viewBox="0 0 200 100">
+                  <path d="M40 80c0-15 12-25 25-25s25 10 25 25M70 80c0-10 8-18 18-18s18 8 18 18M105 80c0-12 10-20 22-20s22 8 22 20M140 80c0-8 6-14 14-14s14 6 14 14" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/>
+                  <circle cx="65" cy="45" r="8" fill="currentColor"/>
+                  <circle cx="88" cy="52" r="6" fill="currentColor"/>
+                  <circle cx="127" cy="48" r="7" fill="currentColor"/>
+                  <circle cx="154" cy="56" r="5" fill="currentColor"/>
+                </svg>
+                <div className="text-sm font-bold text-amber-950 uppercase tracking-wider">
+                  The Dream Team 👨‍👩‍👧‍👦❤️
+                </div>
+              </div>
+            </div>
+            <p className="mt-4 text-sm font-bold text-amber-900/70 italic">
+              {TRANSLATIONS[lang].dream_team}
+            </p>
+          </div>
+
+          {/* TIMELINE SECTION */}
+          <div className="bg-white rounded-3xl p-6 md:p-8 shadow-xl border border-orange-50">
+            
+            <div className={`flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8 pb-4 border-b border-orange-50 ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
+              <div>
+                <h2 className="text-2xl font-black text-amber-950 tracking-tight">
+                  🗺️ {lang === 'HE' ? 'לוח זמנים מפורט' : lang === 'FR' ? 'Programme Détaillé' : 'Detailed Schedule'}
+                </h2>
+                <p className="text-xs text-amber-900/60 mt-0.5">
+                  {currentDayTab === 1 ? TRANSLATIONS[lang].day1_subtitle : TRANSLATIONS[lang].day2_subtitle}
+                </p>
+              </div>
+
+              {/* Day switch buttons */}
+              <div className="flex bg-orange-50/80 p-1 rounded-2xl border border-orange-100 w-full sm:w-auto">
+                <button
+                  onClick={() => setCurrentDayTab(1)}
+                  className={`flex-1 sm:flex-none px-5 py-2.5 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 ${
+                    currentDayTab === 1
+                      ? 'bg-orange-500 text-white shadow-md scale-105'
+                      : 'text-amber-800 hover:text-orange-600'
+                  }`}
+                >
+                  <span>🌅</span> {TRANSLATIONS[lang].day1}
+                </button>
+                <button
+                  onClick={() => setCurrentDayTab(2)}
+                  className={`flex-1 sm:flex-none px-5 py-2.5 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 ${
+                    currentDayTab === 2
+                      ? 'bg-orange-500 text-white shadow-md scale-105'
+                      : 'text-amber-800 hover:text-orange-600'
+                  }`}
+                >
+                  <span>💦</span> {TRANSLATIONS[lang].day2}
+                </button>
+              </div>
+            </div>
+
+            <div className="relative border-l-2 border-orange-100 ml-4 md:ml-6 pl-6 md:pl-8 space-y-8 py-2">
+              {TRANSLATIONS[lang].timeline_steps
+                .filter(step => step.day === currentDayTab)
+                .map((step, idx) => (
+                  <div 
+                    key={idx} 
+                    className={`relative group transition-all duration-300 hover:translate-x-1 ${
+                      step.highlight ? 'bg-amber-500/10 p-5 rounded-2xl border border-amber-500/20 shadow-sm' : ''
+                    }`}
+                  >
+                    <span className={`absolute -left-[33px] md:-left-[41px] top-1.5 flex items-center justify-center w-6 h-6 rounded-full ring-4 ring-white ${
+                      step.highlight 
+                        ? 'bg-gradient-to-r from-orange-500 to-amber-600 text-white scale-125 shadow-md animate-bounce' 
+                        : 'bg-orange-100 text-orange-600 group-hover:bg-orange-500 group-hover:text-white transition-all'
+                    }`}>
+                      {step.highlight ? '👑' : '•'}
+                    </span>
+
+                    <div className="flex flex-wrap items-center gap-2 mb-1.5">
+                      <span className="text-xs font-bold text-orange-600 bg-orange-50 px-2.5 py-1 rounded-full border border-orange-100/50">
+                        ⏱️ {step.time}
+                      </span>
+                      <span className={`text-xs font-extrabold uppercase tracking-widest px-2.5 py-1 rounded-full ${
+                        step.highlight 
+                          ? 'bg-amber-50 text-amber-950 border border-amber-300 bg-amber-200' 
+                          : 'bg-amber-50 text-amber-800 border border-amber-100'
+                      }`}>
+                        {step.tag}
+                      </span>
+                    </div>
+
+                    <h3 className={`text-lg font-extrabold tracking-tight ${step.highlight ? 'text-amber-950 text-xl' : 'text-slate-800'}`}>
+                      {step.title}
+                    </h3>
+                    
+                    <p className="text-sm md:text-base text-slate-600 leading-relaxed mt-1.5 max-w-xl">
+                      {step.desc}
+                    </p>
+
+                    {step.highlight && (
+                      <div className="mt-4 flex flex-wrap gap-2 items-center">
+                        <span className="inline-block px-3 py-1 bg-sky-100 text-sky-800 text-xs font-bold rounded-lg animate-pulse">
+                          💧 Piscine & Champagne !
+                        </span>
+                        <span className="inline-block px-3 py-1 bg-yellow-100 text-yellow-800 text-xs font-bold rounded-lg">
+                          🎉 Surprise Générale !
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                ))}
+            </div>
+
+          </div>
+
+        </div>
+
+        {/* Right Column: Interactive Checklist & Who brings what */}
+        <div className="lg:col-span-4 space-y-8">
+          
+          <div className="bg-white rounded-3xl p-6 shadow-xl border border-orange-50 relative overflow-hidden">
+            <div className="absolute top-0 right-0 left-0 h-1 bg-gradient-to-r from-amber-500 to-amber-700" />
+            <h3 className="text-lg font-extrabold text-amber-950 mb-1 flex items-center gap-2">
+              <span>🗺️</span> {TRANSLATIONS[lang].directions_title}
+            </h3>
+            <p className="text-xs text-amber-900/60 mb-4">{TRANSLATIONS[lang].directions_subtitle}</p>
+
+            <div className="space-y-4">
+              <div className="p-3.5 rounded-2xl bg-[#FFFDF9] border border-orange-100/60 shadow-sm">
+                <div className="text-xs font-bold text-orange-600 uppercase tracking-wide mb-1">
+                  📍 Pause Midi / Lunch Stop
+                </div>
+                <h4 className="font-extrabold text-sm text-slate-800">
+                  The First Station (Jerusalem)
+                </h4>
+                <p className="text-xs text-slate-500 mb-3">David Remez St 4, Jerusalem</p>
+                <div className="flex gap-2">
+                  <a 
+                    href="https://waze.com/ul?q=The+First+Station+Jerusalem"
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex-1 text-center bg-sky-50 text-sky-700 text-xs font-bold py-2 rounded-xl border border-sky-100 hover:bg-sky-100 transition-all"
+                  >
+                    🚙 Waze
+                  </a>
+                  <a 
+                    href="https://maps.google.com/?q=The+First+Station+Jerusalem"
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex-1 text-center bg-orange-50 text-orange-700 text-xs font-bold py-2 rounded-xl border border-orange-100 hover:bg-orange-100 transition-all"
+                  >
+                    🗺️ Maps
+                  </a>
+                </div>
+              </div>
+
+              <div className="p-3.5 rounded-2xl bg-[#FFFDF9] border border-orange-100/60 shadow-sm">
+                <div className="text-xs font-bold text-orange-600 uppercase tracking-wide mb-1">
+                  ⛺ Le Campement / Campsite
+                </div>
+                <h4 className="font-extrabold text-sm text-slate-800">
+                  Camp Sahara Glamping
+                </h4>
+                <p className="text-xs text-slate-500 mb-3">Kalia Beach area, Dead Sea</p>
+                <div className="flex gap-2">
+                  <a 
+                    href="https://waze.com/ul?q=קמפ+סהרה+ים+המלח"
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex-1 text-center bg-sky-50 text-sky-700 text-xs font-bold py-2 rounded-xl border border-sky-100 hover:bg-sky-100 transition-all"
+                  >
+                    🚙 Waze
+                  </a>
+                  <a 
+                    href="https://maps.google.com/?q=Camp+Sahara+Dead+Sea"
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex-1 text-center bg-orange-50 text-orange-700 text-xs font-bold py-2 rounded-xl border border-orange-100 hover:bg-orange-100 transition-all"
+                  >
+                    🗺️ Maps
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-3xl p-6 shadow-xl border border-orange-50">
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="text-lg font-extrabold text-amber-950">
+                {TRANSLATIONS[lang].packing_title}
+              </h3>
+              <span className="text-xs font-bold bg-orange-100 text-orange-800 px-2 py-1 rounded-full">
+                {packedCount}/{checklist.length}
+              </span>
+            </div>
+            <p className="text-xs text-amber-900/60 mb-4">{TRANSLATIONS[lang].packing_subtitle}</p>
+
+            <div className="flex flex-wrap gap-1.5 mb-4">
+              {[
+                { id: 'all', label: TRANSLATIONS[lang].all },
+                { id: 'baby', label: '👶' },
+                { id: 'swim', label: '🏖️' },
+                { id: 'hike', label: '🌵' },
+                { id: 'surprise', label: '🎉' }
+              ].map((cat) => (
+                <button
+                  key={cat.id}
+                  onClick={() => setChecklistFilter(cat.id)}
+                  className={`px-2.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                    checklistFilter === cat.id
+                      ? 'bg-orange-500 text-white shadow-sm'
+                      : 'bg-orange-50 text-amber-800 hover:bg-orange-100/70'
+                  }`}
+                  title={cat.label}
+                >
+                  {cat.label}
+                </button>
+              ))}
+            </div>
+
+            <div className="space-y-2 max-h-[300px] overflow-y-auto pr-1">
+              {filteredChecklist.length === 0 ? (
+                <p className="text-xs text-slate-400 py-4 text-center">{TRANSLATIONS[lang].no_items}</p>
+              ) : (
+                filteredChecklist.map((item) => (
+                  <div 
+                    key={item.id} 
+                    className={`flex items-center justify-between p-2.5 rounded-xl border transition-all ${
+                      item.checked 
+                        ? 'bg-slate-50/70 border-slate-100 text-slate-400 line-through' 
+                        : 'bg-orange-50/20 border-orange-100/50 hover:bg-orange-50/40 text-slate-700'
+                    }`}
+                  >
+                    <label className="flex items-center gap-3 cursor-pointer flex-1 select-none">
+                      <input 
+                        type="checkbox" 
+                        checked={item.checked}
+                        onChange={() => toggleChecklist(item.id)}
+                        className="rounded border-orange-300 text-orange-600 focus:ring-orange-500 h-4 w-4"
+                      />
+                      <span className="text-xs font-medium leading-tight">{item.text}</span>
+                    </label>
+                    <button 
+                      onClick={() => deleteChecklistItem(item.id)}
+                      className="text-slate-400 hover:text-red-500 p-1 text-sm rounded transition"
+                      title="Delete"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                ))
+              )}
+            </div>
+
+            <form onSubmit={addChecklistItem} className="mt-4 pt-4 border-t border-orange-100/70 space-y-2">
+              <div className="flex gap-1.5">
+                <input 
+                  type="text" 
+                  value={newChecklistItem}
+                  onChange={(e) => setNewChecklistItem(e.target.value)}
+                  placeholder={TRANSLATIONS[lang].add_item}
+                  className="flex-1 bg-slate-50 text-slate-700 border border-orange-100/80 rounded-xl px-3 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-orange-400"
+                />
+                <select 
+                  value={newChecklistCategory}
+                  onChange={(e) => setNewChecklistCategory(e.target.value)}
+                  className="bg-slate-50 border border-orange-100/80 rounded-xl px-2 py-1.5 text-xs text-slate-600 focus:outline-none focus:ring-2 focus:ring-orange-400"
+                >
+                  <option value="baby">👶</option>
+                  <option value="swim">🏖️</option>
+                  <option value="hike">🌵</option>
+                  <option value="surprise">🎉</option>
+                </select>
+                <button 
+                  type="submit" 
+                  className="bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs px-3 py-1.5 rounded-xl shadow-sm transition"
+                >
+                  {TRANSLATIONS[lang].btn_add}
+                </button>
+              </div>
+
+              <div className="flex justify-between items-center pt-2">
+                <button 
+                  type="button" 
+                  onClick={resetChecklist}
+                  className="text-[10px] font-bold text-orange-600/80 hover:text-orange-700 underline"
+                >
+                  🔄 {TRANSLATIONS[lang].reset_list}
+                </button>
+                <span className="text-[10px] text-slate-400 font-semibold italic">
+                  {unpackedCount} {TRANSLATIONS[lang].items_left}
+                </span>
+              </div>
+            </form>
+          </div>
+
+          <div className="bg-white rounded-3xl p-6 shadow-xl border border-orange-50">
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="text-lg font-extrabold text-amber-950">
+                {TRANSLATIONS[lang].who_brings_what}
+              </h3>
+              <span className="text-xs font-bold bg-amber-100 text-amber-800 px-2.5 py-1 rounded-full">
+                {taskCompletedCount}/{taskTotalCount}
+              </span>
+            </div>
+            <p className="text-xs text-amber-900/60 mb-4">{TRANSLATIONS[lang].who_subtitle}</p>
+
+            <div className="space-y-3 max-h-[320px] overflow-y-auto pr-1">
+              {tasks.length === 0 ? (
+                <p className="text-xs text-slate-400 py-4 text-center">{TRANSLATIONS[lang].no_tasks}</p>
+              ) : (
+                tasks.map((task) => (
+                  <div 
+                    key={task.id} 
+                    className={`p-3 rounded-2xl border transition-all ${
+                      task.completed 
+                        ? 'bg-emerald-50/40 border-emerald-100 text-slate-400' 
+                        : 'bg-[#FFFDF9] border-orange-100/50 hover:bg-[#FFFBF2] text-slate-700'
+                    }`}
+                  >
+                    <div className="flex items-start justify-between gap-2">
+                      <label className="flex items-start gap-2.5 cursor-pointer flex-1 select-none">
+                        <input 
+                          type="checkbox" 
+                          checked={task.completed}
+                          onChange={() => toggleTask(task.id)}
+                          className="mt-0.5 rounded border-orange-300 text-emerald-600 focus:ring-emerald-500 h-4 w-4"
+                        />
+                        <div className="text-xs">
+                          <p className={`font-semibold leading-tight ${task.completed ? 'line-through text-slate-400' : 'text-slate-800'}`}>
+                            {task.item}
+                          </p>
+                          <div className="flex items-center gap-1.5 mt-1">
+                            <span className="text-[10px] font-extrabold text-amber-800 bg-amber-50 px-2 py-0.5 rounded border border-amber-100/50">
+                              👤 {task.name}
+                            </span>
+                            {task.completed && (
+                              <span className="text-[9px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded">
+                                {TRANSLATIONS[lang].completed}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </label>
+                      <button 
+                        onClick={() => deleteTask(task.id)}
+                        className="text-slate-400 hover:text-red-500 text-xs p-1 rounded transition"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+
+            <form onSubmit={addTask} className="mt-4 pt-4 border-t border-orange-100/70 space-y-2">
+              <div className="space-y-2">
+                <input 
+                  type="text" 
+                  value={newTaskItem}
+                  onChange={(e) => setNewTaskItem(e.target.value)}
+                  placeholder={TRANSLATIONS[lang].add_task}
+                  className="w-full bg-slate-50 text-slate-700 border border-orange-100/80 rounded-xl px-3 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-orange-400"
+                />
+                <div className="flex gap-2">
+                  <input 
+                    type="text" 
+                    value={newTaskName}
+                    onChange={(e) => setNewTaskName(e.target.value)}
+                    placeholder={TRANSLATIONS[lang].assignee_placeholder}
+                    className="flex-1 bg-slate-50 text-slate-700 border border-orange-100/80 rounded-xl px-3 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-orange-400"
+                  />
+                  <button 
+                    type="submit" 
+                    className="bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs px-4 py-1.5 rounded-xl shadow-sm transition"
+                  >
+                    {TRANSLATIONS[lang].btn_add}
+                  </button>
+                </div>
+              </div>
+
+              <div className="pt-2 text-right">
+                <button 
+                  type="button" 
+                  onClick={resetTasks}
+                  className="text-[10px] font-bold text-amber-700/80 hover:text-amber-800 underline"
+                >
+                  🔄 {lang === 'HE' ? 'איפוס משימות' : 'Reset Task Allocations'}
+                </button>
+              </div>
+            </form>
+
+          </div>
+
+        </div>
+
+      </main>
+
+      <footer className="bg-amber-950 text-amber-200/70 py-10 px-4 mt-12 text-center border-t border-amber-900">
+        <div className="max-w-2xl mx-auto space-y-2">
+          <p className="font-extrabold tracking-widest text-white text-sm">
+            ⛰️ SURPRISE CAMP SAHARA 2026 🌌
+          </p>
+          <p className="text-xs">
+            Famille Unie, Souvenirs Éternels • Family Teamwork is Dreamwork
+          </p>
+          <div className="text-[10px] text-amber-400/50 mt-4">
+            Designed for Papa's 60th Surprise Celebration in the Judean Desert & Dead Sea Oasis.
+          </div>
+        </div>
+      </footer>
+
+    </div>
+  );
+}
